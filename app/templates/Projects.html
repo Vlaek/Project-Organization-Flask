@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Проекты
+{% endblock %}
+
+{%block header%}
+    <h3  class="my-0 mr-md-auto text-white">Проекты</h3>
+    <a href="/">Добавить проект</a>
+    <a href="/">Главная</a>
+{% endblock %}
+
+{% block body %}
+
+<form method="post" >
+    <table class="table table-bordered table-dark">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Название</th>
+                <th scope="col">Руководитель</th>
+                <th scope="col">Оборудование</th>
+                <th scope="col">Дата начала</th>
+                <th scope="col">Дата окончания</th>
+                <th scope="col">Стоимость</th>
+            </tr>
+        </thead>
+    <tbody>
+        <tr>
+        {% for row in results %}
+            <th scope="col">{{ row.idProject }}</th>
+            <th scope="col">{{ row.Name }}</th>
+            <th scope="col">{{ row.Nachname }} {{ row.Vorname }}</th>
+            {% if row.Equipment %}
+                <th scope="col">{{ row.Equipment }}</th>
+            {% else %}
+                <th scope="col"></th>
+            {% endif %}
+            <th scope="col">{{ row.StartDate }}</th>
+            <th scope="col">{{ row.EndDate }}</th>
+            <th scope="col">{{ row.Cost }}</th>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <td colspan="7">{{ length }} проекта стоимостью {{ project_sum }} </td>
+    </table>
+</form>
+
+{% endblock %}

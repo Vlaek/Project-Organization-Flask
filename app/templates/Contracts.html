@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Договоры
+{% endblock %}
+
+{%block header%}
+    <h3  class="my-0 mr-md-auto text-white">Договоры</h3>
+    <a href="/">Добавить договор</a>
+    <a href="/">Главная</a>
+{% endblock %}
+
+{% block body %}
+<body bgcolor="#c0c0c0">
+    <form method="post" >
+        <table class="table table-bordered table-dark">
+          <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Название</th>
+                <th scope="col">Заказчик</th>
+                <th scope="col">Дата начала</th>
+                <th scope="col">Дата окончания</th>
+                <th scope="col">Стоимость</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                {% for row in results %}
+                <th scope="col">{{ row.idContract }}</th>
+                <th scope="col">{{ row.Name }}</th>
+                <th scope="col">{{ row.Client }}</th>
+                <th scope="col">{{ row.MinStartDate }}</th>
+                <th scope="col">{{ row.MaxEndDate }}</th>
+                <th scope="col">{{ row.FullCost }}</th>
+            </tr>
+            {% endfor %}
+          </tbody>
+            <td colspan="6">{{ length }} контракта стоимостью {{ total_sum }}</td>
+        </table>
+    </form>
+</body>
+{% endblock %}
