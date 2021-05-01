@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from config import hostname, user, password, db_name, port
 import pymysql
-from datetime import date, datetime
+from datetime import date
 
 app = Flask(__name__)
 app.debug = True
@@ -27,24 +27,53 @@ def calculate_age(born):
 @app.route('/Workers', methods=['POST', 'GET'])
 def workers():
     if request.method == "POST":
-        vorname = request.form['Vorname']
-        nachname = request.form['Nachname']
-        dob = request.form['DOB']
-        speciality = request.form['speciality']
-        position = request.form['position']
+        if request.form['action'] == 'Добавить':
+            forename = request.form['forename']
+            surname = request.form['surname']
+            dob = request.form['DOB']
+            speciality = request.form['speciality']
+            position = request.form['position']
 
-        cursor = db.cursor()
+            cursor = db.cursor()
 
-        insert_query = "INSERT INTO `Workers` (idWorker, Nachname, Vorname, DOB, Speciality, Position) " \
-                       "VALUES ('" + str(21) + "', '" + nachname + "', '" + vorname + "', '" + dob + "', '" + speciality + "', '" + position + "');"
-        cursor.execute(insert_query)
-        db.commit()
+            insert_query = "INSERT INTO `Workers` (surname, forename, DOB, Speciality, Position) " \
+                           "VALUES ('" + surname + "', '" + forename + "', '" + dob + "', '" + speciality + "', '" + position + "');"
+            cursor.execute(insert_query)
+            db.commit()
 
-        return redirect('/Workers')
+            return redirect('/Workers')
+        elif request.form['action'] == 'Изменить':
+            id2 = request.form['Worker2']
+            forename2 = request.form['Forename2']
+            surname2 = request.form['Surname2']
+            dob2 = request.form['DOB2']
+            speciality2 = request.form['Speciality2']
+            position2 = request.form['Position2']
 
+            cursor = db.cursor()
+
+            insert_query = "UPDATE Workers SET " \
+                           "Surname ='" + surname2 + "', Forename='" + forename2 + \
+                           "', DOB='" + dob2 + "', Speciality='" + speciality2 + \
+                           "', Position='" + position2 + "' WHERE idWorker='" + str(id2) + "';"
+            cursor.execute(insert_query)
+            db.commit()
+
+            return redirect('/Workers')
     else:
+
         cursor = db.cursor()
-        sql = 'SELECT * FROM Workers'
+        q = request.args.get('q')
+
+        if q:
+            sql = "SELECT * FROM Workers WHERE ((Surname LIKE '%" + q + "%')" \
+                  "OR (Forename LIKE '%" + q + "%')" \
+                  "OR (DOB LIKE '%" + q + "%')" \
+                  "OR (Speciality LIKE '%" + q + "%')" \
+                  "OR (Position LIKE '%" + q + "%'))"
+        else:
+            sql = 'SELECT * FROM Workers'
+
         cursor.execute(sql)
         results = cursor.fetchall()
 
@@ -63,13 +92,25 @@ def workers():
         return render_template('Workers.html', results=results, length=length)
 
 
+@app.route('/Worker/delete/<int:worker_id>')
+def worker_delete(worker_id):
+
+    cursor = db.cursor()
+
+    sql = 'DELETE FROM Workers WHERE ((Workers.idWorker=' + str(worker_id) + '))'
+
+    cursor.execute(sql)
+
+    return redirect('/Workers')
+
+
 @app.route('/Projects')
 def projects():
     cursor = db.cursor()
 
     cursor.execute(
-        'SELECT Workers.Nachname, Workers.Vorname, Projects.idProject, Projects.Name, Projects.StartDate, Projects.EndDate, '
-        'Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = '
+        'SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, '
+        'Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = '
         'Projects.Leader')
     results = cursor.fetchall()
 

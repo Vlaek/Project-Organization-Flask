@@ -16,33 +16,75 @@ font-family: helvetica, serif;
 text-decoration: none;
 vertical-align: middle;
 }
+
 .btn:hover {
 border-color:#FFCC66 #FFFF99 #FFFF99 #FFCC66;
 border-style:solid;
 border-width:1px;
 background:#FFFF99;
 }
+
 .btn:focus {
 background:#ddd;
 border-color:#ddd #333 #333 #ddd;
 border-style:solid;
 border-width:1px;
 }
+
 .btn:active {
 background:#ff0000;
 border-color:#ddd #333 #333 #ddd;
 border-style:solid;
 border-width:1px;
 }
+
 a{
-margin-left: 50px;
-position: relative;
-right: 25px; - расстояние от края
+margin-right: 5%;
+margin-left: 5%;
+left: 5%; - расстояние от края
+right: 5%; - расстояние от края
+text-align: center;
 }
-body.bg {
-    background:#646464;
-}
+
 header {
     background: #161B22;
     padding-left: 15px;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid purple;
+}
+
+thead th, tfoot th {
+  font-family: 'Rock Salt', cursive;
+}
+
+th {
+  letter-spacing: 2px;
+}
+
+td {
+  letter-spacing: 1px;
+}
+
+tbody td {
+  text-align: center;
+}
+
+tfoot th {
+  text-align: center;
+}
+
+thead, tfoot {
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  text-align: center;
+}
+
+thead th, tfoot th, tfoot td {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+  border: 3px solid purple;
+}
+

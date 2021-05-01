@@ -6,8 +6,16 @@
 
 {%block header%}
     <h3  class="my-0 mr-md-auto text-white">Сотрудники</h3>
-    <button onclick="document.getElementById('id01').style.display='block'">Добавить сотрудника</button>
-    <a href="/">Главная</a>
+    <form method="GET">
+        <div>
+            <input type="text" placeholder="Поиск" name="q" size="50" value="{{ request.args.get('q', '') }}">
+            <button type="submit" >Искать</button>
+        </div>
+    </form>
+    <div>
+        <button onclick="document.getElementById('id01').style.display='block'">Добавить сотрудника</button>
+        <button onclick="document.location='/'">Назад</button>
+    </div>
 {% endblock %}
 
 {% block body %}
@@ -22,9 +30,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input class="form-control" id="Vorname" maxlength="100" name="Vorname"
+                    <input class="form-control" id="forename" maxlength="100" name="forename"
                    placeholder="Введите имя сотрудника"><br>
-                    <input class="form-control" id="Nachname" maxlength="100" name="Nachname"
+                    <input class="form-control" id="surname" maxlength="100" name="surname"
                    placeholder="Введите фамилию сотрудника"><br>
                     <div class="form-group">
                     <input id="DOB" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="DOB"
@@ -55,22 +63,81 @@
             </div>
         </div>
     </div>
+
+    <div id="id02" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактировать сотрудника</h5>
+
+                    <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" id="Worker2" name="Worker2" hidden><br>
+                    <input class="form-control" id="Forename2" maxlength="100" name="Forename2"
+                   placeholder="Введите имя сотрудника"><br>
+                    <input class="form-control" id="Surname2" maxlength="100" name="Surname2"
+                   placeholder="Введите фамилию сотрудника"><br>
+                    <div class="form-group">
+                    <input id="DOB2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="DOB2"
+                       onchange="OnChange() Init()" type="date"/>
+                    <label> - Дата рождения </label>
+                    <br>
+                    <select id="Speciality2" name="Speciality2">
+                        <option>Инженер</option>
+                        <option>Техник</option>
+                        <option>Лаборант</option>
+                        <option>Конструктор</option>
+                        <option>Обслуживающий персонал</option>
+                    </select>
+                    <label> - Специальность </label>
+                    <br>
+                    <select id="Position2" name="Position2">
+                        <option>Рабочий</option>
+                        <option>Начальник</option>
+                    </select>
+                    <label> - Должность </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="action" value="Изменить">
+                    <button type="button" id="cancel2" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script></script>
 <script>
-var modal = document.getElementById('id01');
+var modal1 = document.getElementById('id01');
+var modal2 = document.getElementById('id02');
 
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    if (event.target == modal1) {
+        modal1.style.display = "none";
+    };
+
+    if (event.target == modal2) {
+        modal2.style.display = "none";
     };
 
     cancel.onclick = function() {
-        modal.style.display = "none";
+        modal1.style.display = "none";
+    };
+
+    cancel2.onclick = function() {
+        modal2.style.display = "none";
     };
 
     kreuz.onclick = function() {
-        modal.style.display = "none";
+        modal1.style.display = "none";
+    };
+
+    kreuz2.onclick = function() {
+        modal2.style.display = "none";
     };
 
     function getRandomInRange(min, max) {
@@ -93,29 +160,29 @@ window.onclick = function(event) {
                 format: "json"
             })
             .done(function( data ) {
-                document.getElementById('Vorname').value = data[1]["FirstName"];
-                document.getElementById('Nachname').value = data[1]["LastName"];
+                document.getElementById('forename').value = data[1]["FirstName"];
+                document.getElementById('surname').value = data[1]["LastName"];
                 document.getElementById('DOB').value = formatDate(getRandomInRange(1950, 2002), getRandomInRange(1, 12), getRandomInRange(1,28));
                 let o1 = getRandomInRange(0, 4)
                 if (o1 == 0)
                 {
-                    document.querySelector('#s1').value = "Инженер";
+                    document.querySelector('#speciality').value = "Инженер";
                 }
                 if (o1 == 1)
                 {
-                    document.querySelector('#s1').value = "Техник";
+                    document.querySelector('#speciality').value = "Техник";
                 }
                 if (o1 == 2)
                 {
-                    document.querySelector('#s1').value = "Конструктор";
+                    document.querySelector('#speciality').value = "Конструктор";
                 }
                 if (o1 == 3)
                 {
-                    document.querySelector('#s1').value = "Лаборант";
+                    document.querySelector('#speciality').value = "Лаборант";
                 }
                 if (o1 == 4)
                 {
-                    document.querySelector('#s1').value = "Обслуживающий персонал";
+                    document.querySelector('#speciality').value = "Обслуживающий персонал";
                 }
             });
         });
@@ -133,23 +200,52 @@ window.onclick = function(event) {
                 <th scope="col">Возраст</th>
                 <th scope="col">Специальность</th>
                 <th scope="col">Должность</th>
+                <th colspan="2">Действия</th>
             </tr>
           </thead>
           <tbody>
             <tr>
                 {% for row in results %}
-                <th scope="col">{{ row.idWorker }}</th>
-                <th scope="col">{{ row.Nachname }} {{ row.Vorname }}</th>
-                <th scope="col">{{ row.DOB }}</th>
-                <th scope="col">{{ row.Age }}</th>
-                <th scope="col">{{ row.Speciality }}</th>
-                <th scope="col">{{ row.Position }}</th>
+                <td scope="col">{{ row.idWorker }}</td>
+                <td scope="col">{{ row.Surname }} {{ row.Forename }}</td>
+                <td scope="col">{{ row.DOB }}</td>
+                <td scope="col">{{ row.Age }}</td>
+                <td scope="col">{{ row.Speciality }}</td>
+                <td scope="col">{{ row.Position }}</td>
+                <td>
+                    <a href="#"
+                        onclick="modal_data({{row.idWorker}}, '{{row.Surname}}', '{{row.Forename}}',
+                         '{{row.DOB}}', '{{row.Speciality}}', '{{row.Position}}')">Редактировать</a>
+                </td>
+                <td>
+                    <a href="/Worker/delete/{{row.idWorker}}">Удалить</a>
+                </td>
             </tr>
             {% endfor %}
           </tbody>
-            <td colspan="6">Количество сотрудников {{ length }}</td>
-
+            <th colspan="8">Количество сотрудников {{ length }}</th>
         </table>
+    <script>
+        function modal_data(id, surname, forename, dob, speciality, position) {
+
+            var a = document.getElementById("id02").style.display='block';
+
+            document.getElementById("Forename2").value = forename;
+            document.getElementById("Surname2").value = surname;
+            document.getElementById("DOB2").value = dateFormat(dob, ".", "-");
+            document.getElementById("Speciality2").value = speciality;
+            document.getElementById("Position2").value = position;
+            document.getElementById("Worker2").value = id;
+        };
+
+        function dateFormat(old_date, old_separator, new_separator) {
+
+            var new_date = old_date.split(old_separator);
+
+          return new_date[2] + new_separator + new_date[1] + new_separator + new_date[0];
+        };
+
+    </script>
     </form>
 </body>
 {% endblock %}

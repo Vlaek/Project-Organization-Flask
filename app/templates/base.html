@@ -4,11 +4,22 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <style>
+   html { height: 100%; }
+   body {
+    margin: 0; /* Убираем отступы */
+    height: 100%; /* Высота страницы */
+    background: url(static/bg.jpg); /* Параметры фона */
+    background-size: cover; /* Фон занимает всю доступную площадь */
+   }
+  </style>
             <title>{% block title %}{% endblock %}</title>
     </head>
     <header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4">
             {% block header %} {% endblock %}
     </header>
+
     <body class="bg">
         {% block body %}{% endblock %}
     </body>

@@ -6,8 +6,10 @@
 
 {%block header%}
     <h3  class="my-0 mr-md-auto text-white">Проекты</h3>
-    <a href="/">Добавить проект</a>
-    <a href="/">Главная</a>
+    <div>
+        <button onclick="document.getElementById('id01').style.display='block'">Добавить проект</button>
+        <button onclick="document.location='/'">Назад</button>
+    </div>
 {% endblock %}
 
 {% block body %}
@@ -28,21 +30,21 @@
     <tbody>
         <tr>
         {% for row in results %}
-            <th scope="col">{{ row.idProject }}</th>
-            <th scope="col">{{ row.Name }}</th>
-            <th scope="col">{{ row.Nachname }} {{ row.Vorname }}</th>
+            <td scope="col">{{ row.idProject }}</td>
+            <td scope="col">{{ row.Name }}</td>
+            <td scope="col">{{ row.Nachname }} {{ row.Vorname }}</td>
             {% if row.Equipment %}
-                <th scope="col">{{ row.Equipment }}</th>
+                <td scope="col">{{ row.Equipment }}</td>
             {% else %}
-                <th scope="col"></th>
+                <td scope="col"></td>
             {% endif %}
-            <th scope="col">{{ row.StartDate }}</th>
-            <th scope="col">{{ row.EndDate }}</th>
-            <th scope="col">{{ row.Cost }}</th>
+            <td scope="col">{{ row.StartDate }}</td>
+            <td scope="col">{{ row.EndDate }}</td>
+            <td scope="col">{{ row.Cost }}</td>
             </tr>
         {% endfor %}
     </tbody>
-    <td colspan="7">{{ length }} проекта стоимостью {{ project_sum }} </td>
+    <th colspan="7">{{ length }} проекта стоимостью {{ project_sum }} </th>
     </table>
 </form>
 
