@@ -42,7 +42,9 @@ def workers():
             db.commit()
 
             return redirect('/Workers')
+
         elif request.form['action'] == 'Изменить':
+
             id2 = request.form['Worker2']
             forename2 = request.form['Forename2']
             surname2 = request.form['Surname2']
@@ -56,6 +58,7 @@ def workers():
                            "Surname ='" + surname2 + "', Forename='" + forename2 + \
                            "', DOB='" + dob2 + "', Speciality='" + speciality2 + \
                            "', Position='" + position2 + "' WHERE idWorker='" + str(id2) + "';"
+
             cursor.execute(insert_query)
             db.commit()
 
@@ -89,7 +92,39 @@ def workers():
             results[i].pop('DOB')
             results[i].update({'DOB': old_date[i]})
 
-        return render_template('Workers.html', results=results, length=length)
+        sql_engineer = "SELECT Count(Workers.Speciality) AS ENGINEERS FROM Workers WHERE Workers.Speciality = 'Инженер'"
+        sql_technician = "SELECT Count(Workers.Speciality) AS TECHNICIAN FROM Workers WHERE Workers.Speciality = 'Техник'"
+        sql_assistant = "SELECT Count(Workers.Speciality) AS ASSISTANT FROM Workers WHERE Workers.Speciality = 'Лаборант'"
+        sql_constructor = "SELECT Count(Workers.Speciality) AS CONSTRUCTOR FROM Workers WHERE Workers.Speciality = 'Конструктор'"
+        sql_staff = "SELECT Count(Workers.Speciality) AS STAFF FROM Workers WHERE Workers.Speciality = 'Обслуживающий персонал'"
+        sql_worker = "SELECT Count(Workers.Position) AS WORKER FROM Workers WHERE Workers.Position = 'Рабочий'"
+        sql_leader = "SELECT Count(Workers.Position) AS LEADER FROM Workers WHERE Workers.Position = 'Начальник'"
+
+        cursor.execute(sql_engineer)
+        count_engineers = cursor.fetchall()
+
+        cursor.execute(sql_technician)
+        count_technicians = cursor.fetchall()
+
+        cursor.execute(sql_assistant)
+        count_assistants = cursor.fetchall()
+
+        cursor.execute(sql_constructor)
+        count_constructors = cursor.fetchall()
+
+        cursor.execute(sql_staff)
+        count_staffs = cursor.fetchall()
+
+        cursor.execute(sql_worker)
+        count_workers = cursor.fetchall()
+
+        cursor.execute(sql_leader)
+        count_leaders = cursor.fetchall()
+
+        return render_template('Workers.html', results=results, length=length, count_engineers=count_engineers,
+                               count_technicians=count_technicians, count_assistants=count_assistants,
+                               count_constructors=count_constructors, count_staffs=count_staffs,
+                               count_workers=count_workers, count_leaders=count_leaders)
 
 
 @app.route('/Worker/delete/<int:worker_id>')
@@ -104,23 +139,112 @@ def worker_delete(worker_id):
     return redirect('/Workers')
 
 
-@app.route('/Projects')
+@app.route('/Projects', methods=['POST', 'GET'])
 def projects():
+    if request.method == "POST":
+        if request.form['action'] == 'Добавить':
+
+            name = request.form['Name']
+            cost = request.form['Cost']
+            equipment = request.form['Equipment']
+            start_date = request.form['StartDate']
+            end_date = request.form['EndDate']
+            leader = request.form['Leader']
+
+            cursor = db.cursor()
+
+            name_leader = leader.split(" ")
+
+            sql = "SELECT Workers.Surname, Workers.Forename, Workers.idWorker " \
+                  "FROM WORKERS " \
+                  "GROUP BY Workers.Surname, Workers.Forename, Workers.idWorker " \
+                  "HAVING (((Workers.Surname)='" + name_leader[1] + "') AND ((Workers.Forename)='" + name_leader[0] + "'))"
+
+            cursor.execute(sql)
+            id_leader = cursor.fetchall()
+
+            insert_query = "INSERT INTO `Projects` (Name, StartDate, EndDate, Equipment, Cost, Leader) " \
+                           "VALUES ('" + name + "', '" + start_date + "', '" + end_date + "', '" + equipment + "', '" + cost + "', '" + str(id_leader[0]["idWorker"]) + "');"
+            cursor.execute(insert_query)
+            db.commit()
+
+            return redirect('/Projects')
+
+        elif request.form['action'] == 'Изменить':
+
+            id2 = request.form['idProject2']
+            name2 = request.form['Name2']
+            cost2 = request.form['Cost2']
+            equipment2 = request.form['Equipment2']
+            start_date2 = request.form['StartDate2']
+            end_date2 = request.form['EndDate2']
+            leader2 = request.form['Leader2']
+
+            cursor = db.cursor()
+
+            name_leader = leader2.split(" ")
+
+            sql = "SELECT Workers.Surname, Workers.Forename, Workers.idWorker " \
+                  "FROM WORKERS " \
+                  "GROUP BY Workers.Surname, Workers.Forename, Workers.idWorker " \
+                  "HAVING (((Workers.Surname)='" + name_leader[1] + "') AND ((Workers.Forename)='" + name_leader[0] + "'))"
+
+            cursor.execute(sql)
+            id_leader2 = cursor.fetchall()
+
+            insert_query = "UPDATE Projects SET " \
+                           "Name ='" + name2 + "', Cost='" + cost2 + \
+                           "', Equipment='" + equipment2 + "', StartDate='" + start_date2 + \
+                           "', EndDate='" + end_date2 + "', Leader='" + str(id_leader2[0]["idWorker"]) + "' WHERE idProject='" + str(id2) + "'"
+            cursor.execute(insert_query)
+            db.commit()
+
+            return redirect('/Projects')
+
+    else:
+
+        cursor = db.cursor()
+        q = request.args.get('q')
+
+        if q:
+            sql = "SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, " \
+                "Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
+                "Projects.Leader WHERE ((Workers.Surname LIKE '%" + q + "%') OR (Workers.Forename LIKE '%" + q + "%')" \
+                " OR (Projects.Name LIKE '%" + q + "%') OR (Projects.Equipment LIKE '%" + q + "%')" \
+                " OR (Projects.StartDate LIKE '%" + q + "%') OR (Projects.EndDate LIKE '%" + q + "%') OR (Projects.Cost LIKE '%" + q + "%'))"
+        else:
+            sql = "SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, " \
+                "Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
+                "Projects.Leader"
+
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        project_sum = 0
+        length = len(results)
+
+        for i in range(length):
+            project_sum += int(results[i]['Cost'])
+
+        sql_leader = "SELECT Workers.Surname, Workers.Forename FROM Workers WHERE Workers.Position = 'Начальник'"
+
+        cursor.execute(sql_leader)
+
+        leaders = cursor.fetchall()
+
+        return render_template('Projects.html', results=results, length=length, project_sum=project_sum, leaders=leaders)
+
+
+@app.route('/Project/delete/<int:project_id>')
+def project_delete(project_id):
+
     cursor = db.cursor()
 
-    cursor.execute(
-        'SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, '
-        'Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = '
-        'Projects.Leader')
-    results = cursor.fetchall()
+    sql = 'DELETE FROM Projects WHERE ((Projects.idProject=' + str(project_id) + '))'
 
-    project_sum = 0
-    length = len(results)
+    cursor.execute(sql)
 
-    for i in range(length):
-        project_sum += int(results[i]['Cost'])
-
-    return render_template('Projects.html', results=results, length=length, project_sum=project_sum)
+    return redirect('/Projects')
 
 
 @app.route('/Contracts')

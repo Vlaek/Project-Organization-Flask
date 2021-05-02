@@ -6,13 +6,102 @@
 
 {%block header%}
     <h3  class="my-0 mr-md-auto text-white">Проекты</h3>
+    <form method="GET">
+        <input type="text" placeholder="Поиск" name="q" size="50" value="{{ request.args.get('q', '') }}">
+        <input class="btn2" type="submit" name="action" value="Искать">
+    </form>
     <div>
-        <button onclick="document.getElementById('id01').style.display='block'">Добавить проект</button>
-        <button onclick="document.location='/'">Назад</button>
+        <button class="btn2" onclick="document.getElementById('id01').style.display='block'">Добавить проект</button>
+        <button class="btn2" onclick="document.location='/'">Назад</button>
     </div>
 {% endblock %}
 
 {% block body %}
+<form method="post">
+    <div id="id01" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Добавление проекта</h5>
+                    <button type="button" id="kreuz" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <input class="form-control" id="Name" maxlength="100" name="Name"
+                       placeholder="Введите название проекта" onchange="OnChange()"><br>
+                        <input class="form-control" id="Cost" min="0.00" max="100000000000000" name="Cost" type="number"
+                       step="0.01" placeholder="Стоимость" onchange="OnChange()"><br>
+                        <input class="form-control" id="Equipment" maxlength="100" name="Equipment"
+                       placeholder="Введите оборудование (необязательно)" onchange="OnChange()"><br>
+                        <input id="StartDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="StartDate"
+                           onchange="OnChange()" type="date"/>
+                        <label> - Дата начала </label>
+                        <br>
+                        <input id="EndDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="EndDate"
+                           onchange="OnChange()" type="date"/>
+                        <label> - Дата окончания </label>
+                        <br>
+                        <select id="Leader" name="Leader">
+                            {% for leader in leaders %}
+                                <option>{{ leader.Forename }} {{ leader.Surname }}</option>
+                            {% endfor %}
+                        </select>
+                        <label> - Руководитель проекта </label>
+                        <div class="modal-footer">
+                            <input id="btn1" type="submit" name="action" value="Добавить">
+                            <button type="button" id="cancel" data-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div id="id02" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактирование проекта</h5>
+                    <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <input class="form-control" id="idProject2" name="idProject2" hidden><br>
+                        <input class="form-control" id="Name2" maxlength="100" name="Name2"
+                       placeholder="Введите название проекта" onchange="OnChange2()"><br>
+                        <input class="form-control" id="Cost2" min="0.00" max="100000000000000" name="Cost2" type="number"
+                       step="0.01" placeholder="Стоимость" onchange="OnChange2()"><br>
+                        <input class="form-control" id="Equipment2" maxlength="100" name="Equipment2"
+                       placeholder="Введите оборудование (необязательно)" onchange="OnChange2()"><br>
+                        <input id="StartDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="StartDate2"
+                           onchange="OnChange2()" type="date"/>
+                        <label> - Дата начала </label>
+                        <br>
+                        <input id="EndDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="EndDate2"
+                           onchange="OnChange2()" type="date"/>
+                        <label> - Дата окончания </label>
+                        <br>
+                        <select id="Leader2" name="Leader2">
+                            {% for leader in leaders %}
+                                <option>{{ leader.Forename }} {{ leader.Surname }}</option>
+                            {% endfor %}
+                        </select>
+                        <label> - Руководитель проекта </label>
+                        <div class="modal-footer">
+                            <input id="btn2" type="submit" name="action" value="Изменить">
+                            <button type="button" id="cancel2" data-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/project_add.js') }}"></script>
 
 <form method="post" >
     <table class="table table-bordered table-dark">
@@ -25,27 +114,37 @@
                 <th scope="col">Дата начала</th>
                 <th scope="col">Дата окончания</th>
                 <th scope="col">Стоимость</th>
+                <th colspan="2">Действия</th>
             </tr>
         </thead>
-    <tbody>
-        <tr>
-        {% for row in results %}
-            <td scope="col">{{ row.idProject }}</td>
-            <td scope="col">{{ row.Name }}</td>
-            <td scope="col">{{ row.Nachname }} {{ row.Vorname }}</td>
-            {% if row.Equipment %}
-                <td scope="col">{{ row.Equipment }}</td>
-            {% else %}
-                <td scope="col"></td>
-            {% endif %}
-            <td scope="col">{{ row.StartDate }}</td>
-            <td scope="col">{{ row.EndDate }}</td>
-            <td scope="col">{{ row.Cost }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-    <th colspan="7">{{ length }} проекта стоимостью {{ project_sum }} </th>
+        <tbody>
+            <tr>
+            {% for row in results %}
+                <td scope="col">{{ row.idProject }}</td>
+                <td scope="col">{{ row.Name }}</td>
+                <td scope="col">{{ row.Surname }} {{ row.Forename }}</td>
+                {% if row.Equipment %}
+                    <td scope="col">{{ row.Equipment }}</td>
+                {% else %}
+                    <td scope="col">Отсутствует</td>
+                {% endif %}
+                <td scope="col">{{ row.StartDate }}</td>
+                <td scope="col">{{ row.EndDate }}</td>
+                <td scope="col">{{ row.Cost }}</td>
+                <td>
+                    <a href="#"
+                        onclick="modal_data({{ row.idProject }}, '{{ row.Name }}', '{{ row.Forename }} {{ row.Surname }}',
+                         '{{ row.Equipment }}', '{{ row.StartDate }}', '{{ row.EndDate }}', '{{ row.Cost }}')">Редактировать</a>
+                </td>
+                <td>
+                    <a href="/Project/delete/{{ row.idProject }}">Удалить</a>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <th colspan="9">{{ length }} проекта стоимостью {{ project_sum }} </th>
     </table>
+    <script type="text/javascript" src="{{ url_for('static', filename='scripts/project_edit.js') }}"></script>
 </form>
 
 {% endblock %}

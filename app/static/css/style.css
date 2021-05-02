@@ -1,49 +1,53 @@
 .btn {
-height:100px;
-width:100px;
-border-color:#c2e254 #9bb838 #9bb838 #c2e254;
-border-style:solid;
-border-width:1px;
-background:#c2e254;
-cursor:pointer;
-width: 20%;
- border-radius: 4px;
-margin-left:100px;
-margin-top:50px;
-color: #000000;
-font-size: 15px;
-font-family: helvetica, serif;
-text-decoration: none;
-vertical-align: middle;
+    height:100px;
+    width:100px;
+    border-color:#c2e254 #9bb838 #9bb838 #c2e254;
+    border-style:solid;
+    border-width:1px;
+    background:#c2e254;
+    cursor:pointer;
+    width: 20%;
+    border-radius: 4px;
+    margin-left:150px;
+    margin-top:50px;
+    color: #000000;
+    font-size: 15px;
+    font-family: helvetica, serif;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.btn2 {
+    margin-left:5px;
 }
 
 .btn:hover {
-border-color:#FFCC66 #FFFF99 #FFFF99 #FFCC66;
-border-style:solid;
-border-width:1px;
-background:#FFFF99;
+    border-color:#FFCC66 #FFFF99 #FFFF99 #FFCC66;
+    border-style:solid;
+    border-width:1px;
+    background:#FFFF99;
 }
 
 .btn:focus {
-background:#ddd;
-border-color:#ddd #333 #333 #ddd;
-border-style:solid;
-border-width:1px;
+    background:#ddd;
+    border-color:#ddd #333 #333 #ddd;
+    border-style:solid;
+    border-width:1px;
 }
 
 .btn:active {
-background:#ff0000;
-border-color:#ddd #333 #333 #ddd;
-border-style:solid;
-border-width:1px;
+    background:#ff0000;
+    border-color:#ddd #333 #333 #ddd;
+    border-style:solid;
+    border-width:1px;
 }
 
 a{
-margin-right: 5%;
-margin-left: 5%;
-left: 5%; - расстояние от края
-right: 5%; - расстояние от края
-text-align: center;
+    margin-right: 5%;
+    margin-left: 5%;
+    left: 5%; - расстояние от края
+    right: 5%;
+    text-align: center;
 }
 
 header {
@@ -52,39 +56,38 @@ header {
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 3px solid purple;
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid purple;
 }
 
 thead th, tfoot th {
-  font-family: 'Rock Salt', cursive;
+    font-family: 'Rock Salt', cursive;
 }
 
 th {
-  letter-spacing: 2px;
+    letter-spacing: 2px;
 }
 
 td {
-  letter-spacing: 1px;
+    letter-spacing: 1px;
 }
 
 tbody td {
-  text-align: center;
+    text-align: center;
 }
 
 tfoot th {
-  text-align: center;
+    text-align: center;
 }
 
 thead, tfoot {
-  color: white;
-  text-shadow: 1px 1px 1px black;
-  text-align: center;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    text-align: center;
 }
 
 thead th, tfoot th, tfoot td {
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
-  border: 3px solid purple;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+    border: 3px solid purple;
 }
-

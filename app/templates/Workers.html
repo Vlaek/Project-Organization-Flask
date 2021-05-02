@@ -7,14 +7,12 @@
 {%block header%}
     <h3  class="my-0 mr-md-auto text-white">Сотрудники</h3>
     <form method="GET">
-        <div>
-            <input type="text" placeholder="Поиск" name="q" size="50" value="{{ request.args.get('q', '') }}">
-            <button type="submit" >Искать</button>
-        </div>
+        <input type="text" placeholder="Поиск" name="q" size="50" value="{{ request.args.get('q', '') }}">
+        <input class="btn2" type="submit" name="action" value="Искать">
     </form>
     <div>
-        <button onclick="document.getElementById('id01').style.display='block'">Добавить сотрудника</button>
-        <button onclick="document.location='/'">Назад</button>
+        <button class="btn2" onclick="document.getElementById('id01').style.display='block'">Добавить сотрудника</button>
+        <button class="btn2" onclick="document.location='/'">Назад</button>
     </div>
 {% endblock %}
 
@@ -31,12 +29,12 @@
                 </div>
                 <div class="modal-body">
                     <input class="form-control" id="forename" maxlength="100" name="forename"
-                   placeholder="Введите имя сотрудника"><br>
+                   placeholder="Введите имя сотрудника" onchange="OnChange()"><br>
                     <input class="form-control" id="surname" maxlength="100" name="surname"
-                   placeholder="Введите фамилию сотрудника"><br>
+                   placeholder="Введите фамилию сотрудника" onchange="OnChange()"><br>
                     <div class="form-group">
                     <input id="DOB" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="DOB"
-                       onchange="OnChange() Init()" type="date"/>
+                       onchange="OnChange()" type="date"/>
                     <label> - Дата рождения </label>
                     <br>
                     <select id="speciality" name="speciality">
@@ -57,7 +55,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="random">Зарандомить</button>
-                    <input type="submit" name="action" value="Добавить">
+                    <input id="btn1" type="submit" name="action" value="Добавить">
                     <button type="button" id="cancel" data-dismiss="modal">Отмена</button>
                 </div>
             </div>
@@ -69,7 +67,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Редактировать сотрудника</h5>
-
                     <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -77,12 +74,12 @@
                 <div class="modal-body">
                     <input class="form-control" id="Worker2" name="Worker2" hidden><br>
                     <input class="form-control" id="Forename2" maxlength="100" name="Forename2"
-                   placeholder="Введите имя сотрудника"><br>
+                   placeholder="Введите имя сотрудника" onchange="OnChange2()"><br>
                     <input class="form-control" id="Surname2" maxlength="100" name="Surname2"
-                   placeholder="Введите фамилию сотрудника"><br>
+                   placeholder="Введите фамилию сотрудника" onchange="OnChange2()"><br>
                     <div class="form-group">
                     <input id="DOB2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="DOB2"
-                       onchange="OnChange() Init()" type="date"/>
+                       onchange="OnChange2()" type="date"/>
                     <label> - Дата рождения </label>
                     <br>
                     <select id="Speciality2" name="Speciality2">
@@ -102,7 +99,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" name="action" value="Изменить">
+                    <input id="btn2" type="submit" name="action" value="Изменить">
                     <button type="button" id="cancel2" data-dismiss="modal">Отмена</button>
                 </div>
             </div>
@@ -110,142 +107,51 @@
     </div>
 </form>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script></script>
-<script>
-var modal1 = document.getElementById('id01');
-var modal2 = document.getElementById('id02');
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/worker_add.js') }}"></script>
 
-window.onclick = function(event) {
-    if (event.target == modal1) {
-        modal1.style.display = "none";
-    };
-
-    if (event.target == modal2) {
-        modal2.style.display = "none";
-    };
-
-    cancel.onclick = function() {
-        modal1.style.display = "none";
-    };
-
-    cancel2.onclick = function() {
-        modal2.style.display = "none";
-    };
-
-    kreuz.onclick = function() {
-        modal1.style.display = "none";
-    };
-
-    kreuz2.onclick = function() {
-        modal2.style.display = "none";
-    };
-
-    function getRandomInRange(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function formatDate(year, month, day) {
-
-      if (day < 10) day = '0' + day;
-
-      if (month < 10) month = '0' + month;
-
-      return year + '-' + month + '-' + day;
-    }
-
-    random.onclick = function(){
-        $( document ).ready(function(){
-            var url = "https://api.randomdatatools.ru/?count=10&params=LastName,FirstName,DateOfBirth";
-            $.getJSON( url, {
-                format: "json"
-            })
-            .done(function( data ) {
-                document.getElementById('forename').value = data[1]["FirstName"];
-                document.getElementById('surname').value = data[1]["LastName"];
-                document.getElementById('DOB').value = formatDate(getRandomInRange(1950, 2002), getRandomInRange(1, 12), getRandomInRange(1,28));
-                let o1 = getRandomInRange(0, 4)
-                if (o1 == 0)
-                {
-                    document.querySelector('#speciality').value = "Инженер";
-                }
-                if (o1 == 1)
-                {
-                    document.querySelector('#speciality').value = "Техник";
-                }
-                if (o1 == 2)
-                {
-                    document.querySelector('#speciality').value = "Конструктор";
-                }
-                if (o1 == 3)
-                {
-                    document.querySelector('#speciality').value = "Лаборант";
-                }
-                if (o1 == 4)
-                {
-                    document.querySelector('#speciality').value = "Обслуживающий персонал";
-                }
-            });
-        });
-    };
-}
-</script>
-<body bgcolor="#c0c0c0">
+<body>
     <form method="post" >
         <table class="table table-bordered table-dark">
-          <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">Имя сотрудника</th>
-                <th scope="col">Дата рождения</th>
-                <th scope="col">Возраст</th>
-                <th scope="col">Специальность</th>
-                <th scope="col">Должность</th>
-                <th colspan="2">Действия</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
+            <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Имя сотрудника</th>
+                    <th scope="col">Дата рождения</th>
+                    <th scope="col">Возраст</th>
+                    <th scope="col">Специальность</th>
+                    <th scope="col">Должность</th>
+                    <th colspan="2">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
                 {% for row in results %}
-                <td scope="col">{{ row.idWorker }}</td>
-                <td scope="col">{{ row.Surname }} {{ row.Forename }}</td>
-                <td scope="col">{{ row.DOB }}</td>
-                <td scope="col">{{ row.Age }}</td>
-                <td scope="col">{{ row.Speciality }}</td>
-                <td scope="col">{{ row.Position }}</td>
-                <td>
-                    <a href="#"
-                        onclick="modal_data({{row.idWorker}}, '{{row.Surname}}', '{{row.Forename}}',
-                         '{{row.DOB}}', '{{row.Speciality}}', '{{row.Position}}')">Редактировать</a>
-                </td>
-                <td>
-                    <a href="/Worker/delete/{{row.idWorker}}">Удалить</a>
-                </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-            <th colspan="8">Количество сотрудников {{ length }}</th>
+                    <td scope="col">{{ row.idWorker }}</td>
+                    <td scope="col">{{ row.Surname }} {{ row.Forename }}</td>
+                    <td scope="col">{{ row.DOB }}</td>
+                    <td scope="col">{{ row.Age }}</td>
+                    <td scope="col">{{ row.Speciality }}</td>
+                    <td scope="col">{{ row.Position }}</td>
+                    <td>
+                        <a href="#"
+                        onclick="modal_data({{ row.idWorker }}, '{{ row.Surname }}', '{{ row.Forename }}',
+                        '{{ row.DOB }}', '{{ row.Speciality }}', '{{ row.Position }}')">Редактировать</a>
+                    </td>
+                    <td>
+                        <a href="/Worker/delete/{{ row.idWorker }}">Удалить</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <th colspan="8">Количество сотрудников {{ length }}, инженеров {{ count_engineers[0]['ENGINEERS'] }},
+            техников {{ count_technicians[0]['TECHNICIAN'] }}, конструкторов {{ count_constructors[0]['CONSTRUCTOR'] }},
+            лаборантов {{ count_assistants[0]['ASSISTANT'] }},
+            обслуживающего персонала {{ count_staffs[0]['STAFF'] }},
+            рабочих {{ count_workers[0]['WORKER'] }},
+            начальников {{ count_leaders[0]['LEADER'] }}.</th>
         </table>
-    <script>
-        function modal_data(id, surname, forename, dob, speciality, position) {
-
-            var a = document.getElementById("id02").style.display='block';
-
-            document.getElementById("Forename2").value = forename;
-            document.getElementById("Surname2").value = surname;
-            document.getElementById("DOB2").value = dateFormat(dob, ".", "-");
-            document.getElementById("Speciality2").value = speciality;
-            document.getElementById("Position2").value = position;
-            document.getElementById("Worker2").value = id;
-        };
-
-        function dateFormat(old_date, old_separator, new_separator) {
-
-            var new_date = old_date.split(old_separator);
-
-          return new_date[2] + new_separator + new_date[1] + new_separator + new_date[0];
-        };
-
-    </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts/worker_edit.js') }}"></script>
     </form>
 </body>
 {% endblock %}
