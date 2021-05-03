@@ -1,11 +1,10 @@
 function modal_data(id, name, leader, equipment, start_date, end_date, cost) {
 
     var a = document.getElementById("id02").style.display='block';
-
     document.getElementById("Name2").value = name;
     document.getElementById("Leader2").value = leader;
-    document.getElementById("StartDate2").value = start_date;
-    document.getElementById("EndDate2").value = end_date;
+    document.getElementById("StartDate2").value = dateFormat(start_date, ".", "-");
+    document.getElementById("EndDate2").value = dateFormat(end_date, ".", "-");
     document.getElementById("Equipment2").value = equipment;
     document.getElementById("Cost2").value = cost;
     document.getElementById("idProject2").value = id;
