@@ -19,11 +19,6 @@ def index():
     return render_template('index.html')
 
 
-def calculate_age(born):
-    today = date.today()
-    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-
-
 @app.route('/Workers', methods=['POST', 'GET'])
 def workers():
     if request.method == "POST":
@@ -39,6 +34,7 @@ def workers():
             insert_query = "INSERT INTO `Workers` (surname, forename, DOB, Speciality, Position) " \
                            "VALUES ('" + surname + "', '" + forename + "', '" + dob + "', '" + speciality + "', '" + position + "');"
             cursor.execute(insert_query)
+
             db.commit()
 
             return redirect('/Workers')
@@ -60,6 +56,7 @@ def workers():
                            "', Position='" + position2 + "' WHERE idWorker='" + str(id2) + "';"
 
             cursor.execute(insert_query)
+
             db.commit()
 
             return redirect('/Workers')
@@ -70,25 +67,24 @@ def workers():
 
         if q:
             sql = "SELECT * FROM Workers WHERE ((Surname LIKE '%" + q + "%')" \
-                  "OR (Forename LIKE '%" + q + "%')" \
-                  "OR (DOB LIKE '%" + q + "%')" \
-                  "OR (Speciality LIKE '%" + q + "%')" \
-                  "OR (Position LIKE '%" + q + "%'))"
+             "OR (Forename LIKE '%" + q + "%')" \
+             "OR (DOB LIKE '%" + q + "%')" \
+             "OR (Speciality LIKE '%" + q + "%')" \
+             "OR (Position LIKE '%" + q + "%'))"
         else:
             sql = 'SELECT * FROM Workers'
 
         cursor.execute(sql)
-        results = cursor.fetchall()
 
-        length = len(results)
+        results = cursor.fetchall()
 
         new_date = []
 
-        for i in range(length):
+        for i in range(len(results)):
             results[i].update({'Age': calculate_age(results[i]['DOB'])})
             new_date.append(results[i]['DOB'].strftime('%d.%m.%Y'))
 
-        for i in range(length):
+        for i in range(len(results)):
             results[i].pop('DOB')
             results[i].update({'DOB': new_date[i]})
 
@@ -121,7 +117,7 @@ def workers():
         cursor.execute(sql_leader)
         count_leaders = cursor.fetchall()
 
-        return render_template('Workers.html', results=results, length=length, count_engineers=count_engineers,
+        return render_template('Workers.html', results=results, length=len(results), count_engineers=count_engineers,
                                count_technicians=count_technicians, count_assistants=count_assistants,
                                count_constructors=count_constructors, count_staffs=count_staffs,
                                count_workers=count_workers, count_leaders=count_leaders)
@@ -129,12 +125,11 @@ def workers():
 
 @app.route('/Worker/delete/<int:worker_id>')
 def worker_delete(worker_id):
-
     cursor = db.cursor()
 
-    sql = 'DELETE FROM Workers WHERE ((Workers.idWorker=' + str(worker_id) + '))'
+    cursor.execute('DELETE FROM Workers WHERE ((Workers.idWorker=' + str(worker_id) + '))')
 
-    cursor.execute(sql)
+    db.commit()
 
     return redirect('/Workers')
 
@@ -161,11 +156,14 @@ def projects():
                   "HAVING (((Workers.Surname)='" + name_leader[1] + "') AND ((Workers.Forename)='" + name_leader[0] + "'))"
 
             cursor.execute(sql)
+
             id_leader = cursor.fetchall()
 
             insert_query = "INSERT INTO `Projects` (Name, StartDate, EndDate, Equipment, Cost, Leader) " \
                            "VALUES ('" + name + "', '" + start_date + "', '" + end_date + "', '" + equipment + "', '" + cost + "', '" + str(id_leader[0]["idWorker"]) + "');"
+
             cursor.execute(insert_query)
+
             db.commit()
 
             return redirect('/Projects')
@@ -190,72 +188,72 @@ def projects():
                   "HAVING (((Workers.Surname)='" + name_leader[1] + "') AND ((Workers.Forename)='" + name_leader[0] + "'))"
 
             cursor.execute(sql)
+
             id_leader2 = cursor.fetchall()
 
             insert_query = "UPDATE Projects SET " \
                            "Name ='" + name2 + "', Cost='" + cost2 + \
                            "', Equipment='" + equipment2 + "', StartDate='" + start_date2 + \
                            "', EndDate='" + end_date2 + "', Leader='" + str(id_leader2[0]["idWorker"]) + "' WHERE idProject='" + str(id2) + "'"
+
             cursor.execute(insert_query)
+
             db.commit()
 
             return redirect('/Projects')
-
     else:
 
         cursor = db.cursor()
+
         q = request.args.get('q')
 
         if q:
             sql = "SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, " \
-                "Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
-                "Projects.Leader WHERE ((Workers.Surname LIKE '%" + q + "%') OR (Workers.Forename LIKE '%" + q + "%')" \
-                " OR (Projects.Name LIKE '%" + q + "%') OR (Projects.Equipment LIKE '%" + q + "%')" \
-                " OR (Projects.StartDate LIKE '%" + q + "%') OR (Projects.EndDate LIKE '%" + q + "%') OR (Projects.Cost LIKE '%" + q + "%'))"
+                  "Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
+                  "Projects.Leader WHERE ((Workers.Surname LIKE '%" + q + "%') OR (Workers.Forename LIKE '%" + q + "%')" \
+                  " OR (Projects.Name LIKE '%" + q + "%') OR (Projects.Equipment LIKE '%" + q + "%')" \
+                  " OR (Projects.StartDate LIKE '%" + q + "%') OR (Projects.EndDate LIKE '%" + q + "%') OR (Projects.Cost LIKE '%" + q + "%'))"
         else:
             sql = "SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, " \
-                "Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
-                "Projects.Leader"
+                  "Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
+                  "Projects.Leader"
 
         cursor.execute(sql)
+
         results = cursor.fetchall()
 
         project_sum = 0
-        length = len(results)
 
-        for i in range(length):
-            project_sum += int(results[i]['Cost'])
+        for i in range(len(results)):
+            project_sum += results[i]['Cost']
 
-        sql_leader = "SELECT Workers.Surname, Workers.Forename FROM Workers WHERE Workers.Position = 'Начальник'"
-
-        cursor.execute(sql_leader)
+        cursor.execute("SELECT Workers.Surname, Workers.Forename FROM Workers WHERE Workers.Position = 'Начальник'")
 
         leaders = cursor.fetchall()
 
         new_start_date = []
         new_end_date = []
 
-        for i in range(length):
+        for i in range(len(results)):
             new_start_date.append(results[i]['StartDate'].strftime('%d.%m.%Y'))
             new_end_date.append(results[i]['EndDate'].strftime('%d.%m.%Y'))
 
-        for i in range(length):
+        for i in range(len(results)):
             results[i].pop('StartDate')
             results[i].update({'StartDate': new_start_date[i]})
             results[i].pop('EndDate')
             results[i].update({'EndDate': new_end_date[i]})
 
-        return render_template('Projects.html', results=results, length=length, project_sum=project_sum, leaders=leaders)
+        return render_template('Projects.html', results=results, length=len(results), project_sum=project_sum, leaders=leaders)
 
 
 @app.route('/Project/delete/<int:project_id>')
 def project_delete(project_id):
-
     cursor = db.cursor()
 
-    sql = 'DELETE FROM Projects WHERE ((Projects.idProject=' + str(project_id) + '))'
+    cursor.execute('DELETE FROM Projects WHERE ((Projects.idProject=' + str(project_id) + '))')
 
-    cursor.execute(sql)
+    db.commit()
 
     return redirect('/Projects')
 
@@ -267,13 +265,31 @@ def contracts():
 
             name = request.form['Name']
             client = request.form['Client']
+            contract_project = request.form.getlist('projects')
 
             cursor = db.cursor()
 
             insert_query = "INSERT INTO `Contracts` (Name, Client) " \
                            "VALUES ('" + name + "', '" + client + "');"
+
             cursor.execute(insert_query)
+
             db.commit()
+
+            cursor.execute("SELECT * FROM Contracts")
+
+            results = cursor.fetchall()
+
+            ids_contracts = []
+
+            for i in range(len(results)):
+                ids_contracts.append(results[i]['idContract'])
+
+            for row in range(len(contract_project)):
+                insert_query = "INSERT INTO `ContractProject` (idContract, idProject) " \
+                               "VALUES ('" + str(max(ids_contracts)) + "', '" + str(contract_project[row]) + "');"
+                cursor.execute(insert_query)
+                db.commit()
 
             return redirect('/Contracts')
 
@@ -282,60 +298,96 @@ def contracts():
             id2 = request.form['idContract2']
             name2 = request.form['Name2']
             client2 = request.form['Client2']
+            contract_project2 = request.form.getlist('projects2')
 
             cursor = db.cursor()
 
             update_query = "UPDATE Contracts SET " \
                            "Name ='" + name2 + "', Client='" + client2 + \
                            "' WHERE idContract='" + str(id2) + "'"
+
             cursor.execute(update_query)
+
+            cursor.execute('DELETE FROM ContractProject WHERE ((ContractProject.idContract=' + str(id2) + '))')
+
             db.commit()
 
-            return redirect('/Contracts')
+            ids_contracts = []
 
+            cursor.execute("SELECT * FROM Contracts")
+
+            results = cursor.fetchall()
+
+            for i in range(len(results)):
+                ids_contracts.append(results[i]['idContract'])
+
+            for row in range(len(contract_project2)):
+                insert_query = "INSERT INTO `ContractProject` (idContract, idProject) " \
+                               "VALUES ('" + str(id2) + "', '" + str(contract_project2[row]) + "');"
+                cursor.execute(insert_query)
+                db.commit()
+
+            return redirect('/Contracts')
     else:
 
         cursor = db.cursor()
+
         q = request.args.get('q')
 
         if q:
             sql = "SELECT Contracts.idContract, Min(Projects.StartDate) AS MinStartDate, Max(Projects.EndDate) AS " \
-                   "MaxEndDate, Contracts.Name, Contracts.Client, Sum(Projects.Cost) AS FullCost FROM Projects INNER " \
-                   "JOIN (Contracts INNER JOIN ContractProject ON Contracts.IdContract = ContractProject.IdContract) " \
-                   "ON Projects.IdProject = ContractProject.IdProject" \
-                   " WHERE ((Contracts.Name LIKE '%" + q + "%') OR (Contracts.Client LIKE '%" + q + "%')) " \
-                   " GROUP BY Contracts.IdContract, Contracts.Name, Contracts.Client"
+                  "MaxEndDate, Contracts.Name, Contracts.Client, Sum(Projects.Cost) AS FullCost FROM Projects INNER " \
+                  "JOIN (Contracts INNER JOIN ContractProject ON Contracts.IdContract = ContractProject.IdContract) " \
+                  "ON Projects.IdProject = ContractProject.IdProject" \
+                  " WHERE ((Contracts.Name LIKE '%" + q + "%') OR (Contracts.Client LIKE '%" + q + "%')) " \
+                                                                                                   " GROUP BY Contracts.IdContract, Contracts.Name, Contracts.Client"
         else:
             sql = "SELECT Contracts.idContract, Min(Projects.StartDate) AS MinStartDate, Max(Projects.EndDate) AS " \
-                   "MaxEndDate, Contracts.Name, Contracts.Client, Sum(Projects.Cost) AS FullCost FROM Projects INNER " \
-                   "JOIN (Contracts INNER JOIN ContractProject ON Contracts.IdContract = ContractProject.IdContract) " \
-                   "ON Projects.IdProject = ContractProject.IdProject GROUP BY Contracts.IdContract, Contracts.Name, " \
-                   "Contracts.Client"
+                  "MaxEndDate, Contracts.Name, Contracts.Client, Sum(Projects.Cost) AS FullCost FROM Projects INNER " \
+                  "JOIN (Contracts INNER JOIN ContractProject ON Contracts.IdContract = ContractProject.IdContract) " \
+                  "ON Projects.IdProject = ContractProject.IdProject GROUP BY Contracts.IdContract, Contracts.Name, " \
+                  "Contracts.Client"
 
         cursor.execute(sql)
 
         results = cursor.fetchall()
 
         total_sum = 0
-        length = len(results)
 
-        for i in range(length):
+        for i in range(len(results)):
             total_sum += results[i]['FullCost']
 
         new_start_date = []
         new_end_date = []
 
-        for i in range(length):
+        for i in range(len(results)):
             new_start_date.append(results[i]['MinStartDate'].strftime('%d.%m.%Y'))
             new_end_date.append(results[i]['MaxEndDate'].strftime('%d.%m.%Y'))
 
-        for i in range(length):
+        for i in range(len(results)):
             results[i].pop('MinStartDate')
             results[i].update({'MinStartDate': new_start_date[i]})
             results[i].pop('MaxEndDate')
             results[i].update({'MaxEndDate': new_end_date[i]})
 
-        return render_template('Contracts.html', results=results, length=length, total_sum=total_sum)
+        cursor.execute("SELECT * FROM Projects")
+
+        projects_check = cursor.fetchall()
+
+        cursor.execute("SELECT Projects.idProject, Projects.Name, Contracts.idContract FROM Contracts INNER JOIN (Projects INNER "
+                       "JOIN ContractProject ON Projects.idProject = ContractProject.idProject) "
+                       "ON Contracts.idContract = ContractProject.idContract ")
+
+        contract_project_check = cursor.fetchall()
+
+        edit_projects_check = []
+
+        for i in range(len(projects_check)):
+            edit_projects_check.append(projects_check[i]['Name'])
+
+        return render_template('Contracts.html', results=results, length=len(results), total_sum=total_sum,
+                               projects_check=projects_check, contract_project_check=contract_project_check,
+                               edit_projects_check=edit_projects_check)
 
 
 @app.route('/Contract/delete/<int:contract_id>')
@@ -343,9 +395,11 @@ def contract_delete(contract_id):
 
     cursor = db.cursor()
 
-    sql = 'DELETE FROM Contracts WHERE ((Contracts.idContract=' + str(contract_id) + '))'
+    cursor.execute('DELETE FROM Contracts WHERE ((Contracts.idContract=' + str(contract_id) + '))')
 
-    cursor.execute(sql)
+    cursor.execute('DELETE FROM ContractProject WHERE ((ContractProject.idContract=' + str(contract_id) + '))')
+
+    db.commit()
 
     return redirect('/Contracts')
 
@@ -360,8 +414,6 @@ def subcontractors():
             name_project = request.form['NameProject']
             workload = request.form['Workload']
 
-            print(workload)
-
             cursor = db.cursor()
 
             id_project_query = "SELECT Projects.Name, Projects.idProject FROM Projects" \
@@ -370,8 +422,6 @@ def subcontractors():
             cursor.execute(id_project_query)
 
             id_project = cursor.fetchall()
-
-            new_workload = workload.split(".")
 
             insert_query = "INSERT INTO `Subcontractors` (Name, Cost, idProject, Workload) " \
                            "VALUES ('" + name + "', '" + cost + "', '" + str(id_project[0]['idProject']) + "', '" + workload + "')"
@@ -411,6 +461,7 @@ def subcontractors():
     else:
 
         cursor = db.cursor()
+
         q = request.args.get('q')
 
         if q:
@@ -423,10 +474,9 @@ def subcontractors():
         results = cursor.fetchall()
 
         total_sum = 0
-        length = len(results)
 
-        for i in range(length):
-            total_sum += int(results[i]['Cost'])
+        for i in range(len(results)):
+            total_sum += results[i]['Cost']
 
         sql_project = "SELECT Projects.idProject, Projects.Name " \
                       "FROM Projects"
@@ -435,10 +485,10 @@ def subcontractors():
 
         projects_name = cursor.fetchall()
 
-        for i in range(length):
+        for i in range(len(results)):
             results[i].update({'ProjectName': projects_name[i]['Name']})
 
-        return render_template('Subcontractors.html', results=results, length=length, total_sum=total_sum, projects_name=projects_name)
+        return render_template('Subcontractors.html', results=results, length=len(results), total_sum=total_sum, projects_name=projects_name)
 
 
 @app.route('/Subcontractor/delete/<int:subcontractor_id>')
@@ -446,11 +496,16 @@ def subcontractor_delete(subcontractor_id):
 
     cursor = db.cursor()
 
-    sql = 'DELETE FROM Subcontractors WHERE ((Subcontractors.idSubcontractor=' + str(subcontractor_id) + '))'
+    cursor.execute('DELETE FROM Subcontractors WHERE ((Subcontractors.idSubcontractor=' + str(subcontractor_id) + '))')
 
-    cursor.execute(sql)
+    db.commit()
 
     return redirect('/Subcontractors')
+
+
+def calculate_age(born):
+    today = date.today()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
 
 if __name__ == '__main__':

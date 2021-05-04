@@ -29,7 +29,7 @@ window.onclick = function(event) {
 
 function OnChange()
 {
-    if (document.getElementById("Name").value == '' || document.getElementById("Client").value == '')
+    if (document.getElementById("Name").value == '' || document.getElementById("Client").value == '' || $('.require-one:checked').length < 1)
     {
         document.getElementById("btn1").setAttribute("disabled", "disabled");
     }
