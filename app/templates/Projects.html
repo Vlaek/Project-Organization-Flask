@@ -27,31 +27,30 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                    <div class="modal-body">
-                        <input class="form-control" id="Name" maxlength="100" name="Name"
-                       placeholder="Введите название проекта" onchange="OnChange()"><br>
-                        <input class="form-control" id="Cost" min="0.00" max="100000000000000" name="Cost" type="number"
-                       step="0.01" placeholder="Стоимость" onchange="OnChange()"><br>
-                        <input class="form-control" id="Equipment" maxlength="100" name="Equipment"
-                       placeholder="Введите оборудование (необязательно)" onchange="OnChange()"><br>
-                        <input id="StartDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="StartDate"
-                           onchange="OnChange()" type="date"/>
-                        <label> - Дата начала </label>
-                        <br>
-                        <input id="EndDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="EndDate"
-                           onchange="OnChange()" type="date"/>
-                        <label> - Дата окончания </label>
-                        <br>
-                        <select id="Leader" name="Leader">
-                            {% for leader in leaders %}
-                                <option>{{ leader.Forename }} {{ leader.Surname }}</option>
-                            {% endfor %}
-                        </select>
-                        <label> - Руководитель проекта </label>
-                        <div class="modal-footer">
-                            <input id="btn1" type="submit" name="action" value="Добавить">
-                            <button type="button" id="cancel" data-dismiss="modal">Отмена</button>
-                        </div>
+                <div class="modal-body">
+                    <input class="form-control" id="Name" maxlength="100" name="Name"
+                   placeholder="Введите название проекта" onchange="OnChange()"><br>
+                    <input class="form-control" id="Cost" min="0.00" max="100000000000000" name="Cost" type="number"
+                   step="0.01" placeholder="Стоимость" onchange="OnChange()"><br>
+                    <input class="form-control" id="Equipment" maxlength="100" name="Equipment"
+                   placeholder="Введите оборудование (необязательно)" onchange="OnChange()"><br>
+                    <input id="StartDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="StartDate"
+                       onchange="OnChange()" type="date" style="width: 220px;"/>
+                    <label> - Дата начала </label>
+                    <br>
+                    <input id="EndDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="EndDate"
+                       onchange="OnChange()" type="date" style="width: 220px;"/>
+                    <label> - Дата окончания </label>
+                    <br>
+                    <select id="Leader" name="Leader" style="width: 220px;">
+                        {% for leader in leaders %}
+                            <option>{{ leader.Forename }} {{ leader.Surname }}</option>
+                        {% endfor %}
+                    </select>
+                    <label> - Руководитель проекта </label>
+                    <div class="modal-footer">
+                        <input id="btn1" type="submit" name="action" value="Добавить">
+                        <button type="button" id="cancel" data-dismiss="modal">Отмена</button>
                     </div>
                 </div>
             </div>
@@ -63,36 +62,35 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Редактирование проекта</h5>
+                    <input class="form-control" id="idProject2" name="idProject2" hidden>
                     <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                    <div class="modal-body">
-                        <input class="form-control" id="idProject2" name="idProject2" hidden><br>
-                        <input class="form-control" id="Name2" maxlength="100" name="Name2"
-                       placeholder="Введите название проекта" onchange="OnChange2()"><br>
-                        <input class="form-control" id="Cost2" min="0.00" max="100000000000000" name="Cost2" type="number"
-                       step="0.01" placeholder="Стоимость" onchange="OnChange2()"><br>
-                        <input class="form-control" id="Equipment2" maxlength="100" name="Equipment2"
-                       placeholder="Введите оборудование (необязательно)" onchange="OnChange2()"><br>
-                        <input id="StartDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="StartDate2"
-                           onchange="OnChange2()" type="date"/>
-                        <label> - Дата начала </label>
-                        <br>
-                        <input id="EndDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="EndDate2"
-                           onchange="OnChange2()" type="date"/>
-                        <label> - Дата окончания </label>
-                        <br>
-                        <select id="Leader2" name="Leader2">
-                            {% for leader in leaders %}
-                                <option>{{ leader.Forename }} {{ leader.Surname }}</option>
-                            {% endfor %}
-                        </select>
-                        <label> - Руководитель проекта </label>
-                        <div class="modal-footer">
-                            <input id="btn2" type="submit" name="action" value="Изменить">
-                            <button type="button" id="cancel2" data-dismiss="modal">Отмена</button>
-                        </div>
+                <div class="modal-body">
+                    <input class="form-control" id="Name2" maxlength="100" name="Name2"
+                   placeholder="Введите название проекта" onchange="OnChange2()"><br>
+                    <input class="form-control" id="Cost2" min="0.00" max="100000000000000" name="Cost2" type="number"
+                   step="0.01" placeholder="Стоимость" onchange="OnChange2()"><br>
+                    <input class="form-control" id="Equipment2" maxlength="100" name="Equipment2"
+                   placeholder="Введите оборудование (необязательно)" onchange="OnChange2()"><br>
+                    <input id="StartDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="StartDate2"
+                       onchange="OnChange2()" type="date"/>
+                    <label> - Дата начала </label>
+                    <br>
+                    <input id="EndDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="EndDate2"
+                       onchange="OnChange2()" type="date"/>
+                    <label> - Дата окончания </label>
+                    <br>
+                    <select id="Leader2" name="Leader2">
+                        {% for leader in leaders %}
+                            <option>{{ leader.Forename }} {{ leader.Surname }}</option>
+                        {% endfor %}
+                    </select>
+                    <label> - Руководитель проекта </label>
+                    <div class="modal-footer">
+                        <input id="btn2" type="submit" name="action" value="Изменить">
+                        <button type="button" id="cancel2" data-dismiss="modal">Отмена</button>
                     </div>
                 </div>
             </div>

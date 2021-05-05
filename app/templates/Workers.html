@@ -34,10 +34,10 @@
                    placeholder="Введите фамилию сотрудника" onchange="OnChange()"><br>
                     <div class="form-group">
                     <input id="DOB" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="DOB"
-                       onchange="OnChange()" type="date"/>
+                       onchange="OnChange()" type="date" style="width: 220px;"/>
                     <label> - Дата рождения </label>
                     <br>
-                    <select id="speciality" name="speciality">
+                    <select id="speciality" name="speciality" style="width: 220px;">
                         <option>Инженер</option>
                         <option>Техник</option>
                         <option>Лаборант</option>
@@ -46,12 +46,20 @@
                     </select>
                     <label> - Специальность </label>
                     <br>
-                    <select id="position" name="position">
+                    <select id="position" name="position" style="width: 220px;">
                         <option>Рабочий</option>
                         <option>Начальник</option>
                     </select>
                     <label> - Должность </label>
                     </div>
+
+                    <div style="overflow: auto; width: 100%; height: 80px; border: 1px solid #336699; padding-left: 5px">
+                        {% for project in projects_check %}
+                            <input class="require-one" type="checkbox"
+                            name="projects" value="{{ project.idProject }}" onchange="OnChange()" > {{ project.Name }}<br>
+                        {% endfor %}
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="random">Зарандомить</button>
@@ -67,22 +75,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Редактировать сотрудника</h5>
+                    <input class="form-control" id="Worker2" name="Worker2" hidden>
                     <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input class="form-control" id="Worker2" name="Worker2" hidden><br>
                     <input class="form-control" id="Forename2" maxlength="100" name="Forename2"
                    placeholder="Введите имя сотрудника" onchange="OnChange2()"><br>
                     <input class="form-control" id="Surname2" maxlength="100" name="Surname2"
                    placeholder="Введите фамилию сотрудника" onchange="OnChange2()"><br>
                     <div class="form-group">
                     <input id="DOB2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="DOB2"
-                       onchange="OnChange2()" type="date"/>
+                       onchange="OnChange2()" type="date" style="width: 220px;"/>
                     <label> - Дата рождения </label>
                     <br>
-                    <select id="Speciality2" name="Speciality2">
+                    <select id="Speciality2" name="Speciality2" style="width: 220px;">
                         <option>Инженер</option>
                         <option>Техник</option>
                         <option>Лаборант</option>
@@ -91,12 +99,20 @@
                     </select>
                     <label> - Специальность </label>
                     <br>
-                    <select id="Position2" name="Position2">
+                    <select id="Position2" name="Position2" style="width: 220px;">
                         <option>Рабочий</option>
                         <option>Начальник</option>
                     </select>
                     <label> - Должность </label>
                     </div>
+
+                    <div style="overflow: auto; width: 100%; height: 80px; border: 1px solid #336699; padding-left: 5px">
+                        {% for project in projects_check %}
+                            <input class="require-one" type="checkbox" id="{{ project.Name }}"
+                            name="projects2" value="{{ project.idProject }}" onchange="OnChange2()" > {{ project.Name }}<br>
+                        {% endfor %}
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <input id="btn2" type="submit" name="action" value="Изменить">
@@ -119,6 +135,7 @@
                     <th scope="col">Имя сотрудника</th>
                     <th scope="col">Дата рождения</th>
                     <th scope="col">Возраст</th>
+                    <th scope="col">Проекты</th>
                     <th scope="col">Специальность</th>
                     <th scope="col">Должность</th>
                     <th colspan="2">Действия</th>
@@ -131,12 +148,21 @@
                     <td scope="col">{{ row.Surname }} {{ row.Forename }}</td>
                     <td scope="col">{{ row.DOB }}</td>
                     <td scope="col">{{ row.Age }}</td>
+                    <td scope="col">
+                        <select style="overflow: auto; width: 100%; height: 100%" id="ProjectsSelect" name="{{ row.idWorker }}">
+                            {% for executor in executors_check %}
+                                {% if row.idWorker == executor.idWorker %}
+                                    <option>{{ executor.Name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
                     <td scope="col">{{ row.Speciality }}</td>
                     <td scope="col">{{ row.Position }}</td>
                     <td>
                         <a href="#"
                         onclick="modal_data({{ row.idWorker }}, '{{ row.Surname }}', '{{ row.Forename }}',
-                        '{{ row.DOB }}', '{{ row.Speciality }}', '{{ row.Position }}')">Редактировать</a>
+                        '{{ row.DOB }}', '{{ row.Speciality }}', '{{ row.Position }}', {{ edit_executors_check }})">Редактировать</a>
                     </td>
                     <td>
                         <a href="/Worker/delete/{{ row.idWorker }}">Удалить</a>
@@ -144,7 +170,7 @@
                 </tr>
                 {% endfor %}
             </tbody>
-            <th colspan="8">Количество сотрудников {{ length }}, инженеров {{ count_engineers[0]['ENGINEERS'] }},
+            <th colspan="9">Количество сотрудников {{ length }}, инженеров {{ count_engineers[0]['ENGINEERS'] }},
             техников {{ count_technicians[0]['TECHNICIAN'] }}, конструкторов {{ count_constructors[0]['CONSTRUCTOR'] }},
             лаборантов {{ count_assistants[0]['ASSISTANT'] }},
             обслуживающего персонала {{ count_staffs[0]['STAFF'] }},

@@ -2,7 +2,7 @@ function modal_data(id, name, client, project) {
 
     var a = document.getElementById("id02").style.display='block';
 
-    var select = document.getElementsByName('ProjectsSelect')[id - 1];
+    var select = document.getElementsByName(String(id))[0];
 
     var options = select.getElementsByTagName('option');
 

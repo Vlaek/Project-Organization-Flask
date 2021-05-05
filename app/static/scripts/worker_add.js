@@ -80,7 +80,7 @@ window.onclick = function(event) {
 function OnChange()
 {
     if (document.getElementById("forename").value == '' || document.getElementById("surname").value == ''
-        || document.getElementById("DOB").value == '')
+        || document.getElementById("DOB").value == '' || $('.require-one:checked').length < 1)
     {
         document.getElementById("btn1").setAttribute("disabled", "disabled");
     }
@@ -94,7 +94,7 @@ function OnChange()
 function OnChange2()
 {
     if (document.getElementById("Forename2").value == '' || document.getElementById("Surname2").value == ''
-        || document.getElementById("DOB2").value == '')
+        || document.getElementById("DOB2").value == '' || $('.require-one:checked').length < 1)
     {
         document.getElementById("btn2").setAttribute("disabled", "disabled");
     }

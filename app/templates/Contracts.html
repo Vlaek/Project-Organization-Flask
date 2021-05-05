@@ -54,12 +54,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Редактирование договора</h5>
+                    <input class="form-control" id="idContract2" name="idContract2" hidden>
                     <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                     <div class="modal-body">
-                        <input class="form-control" id="idContract2" name="idContract2" hidden><br>
                         <input class="form-control" id="Name2" maxlength="100" name="Name2"
                        placeholder="Введите название договора" onchange="OnChange2()"><br>
                         <input class="form-control" id="Client2" maxlength="100" name="Client2"
@@ -106,7 +106,7 @@
                 <td scope="col">{{ row.Name }}</td>
                 <td scope="col">{{ row.Client }}</td>
                 <td scope="col">
-                    <select style="overflow: auto; width: 100%; height: 100%" id="ProjectsSelect" name="ProjectsSelect">
+                    <select style="overflow: auto; width: 100%; height: 100%" id="ProjectsSelect" name="{{ row.idContract }}">
                         {% for project in contract_project_check %}
                             {% if row.idContract == project.idContract %}
                                 <option>{{ project.Name }}</option>
