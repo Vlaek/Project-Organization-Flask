@@ -27,28 +27,22 @@ window.onclick = function(event) {
     };
 }
 
-function OnChange()
-{
+function OnChange() {
     if (document.getElementById("Name").value == '' || document.getElementById("Cost").value == ''
         || document.getElementById("NameProject").value == '' || document.getElementById("Workload").value == '')
     {
         document.getElementById("btn1").setAttribute("disabled", "disabled");
-    }
-    else
-    {
+    } else {
         document.getElementById("btn1").removeAttribute("disabled");
     }
 }
 
-function OnChange2()
-{
+function OnChange2() {
     if (document.getElementById("Name2").value == '' || document.getElementById("Cost2").value == ''
         || document.getElementById("ProjectName2").value == '' || document.getElementById("Workload2").value == '')
     {
         document.getElementById("btn2").setAttribute("disabled", "disabled");
-    }
-    else
-    {
+    } else {
         document.getElementById("btn2").removeAttribute("disabled");
     }
 }

@@ -5,19 +5,21 @@
 {% endblock %}
 
 {%block header%}
-    <h3  class="my-0 mr-md-auto text-white">Проектная организация</h3>
-    <div>
-        <button onclick="document.location='/Workers'">Сотрудники</button>
-        <button onclick="document.location='/Projects'">Проекты</button>
-        <button onclick="document.location='/Contracts'">Договоры</button>
-        <button onclick="document.location='/Subcontractors'">Субподрядные организации</button>
-    </div>
+        <div class="header__title">
+            <i class="fa-solid fa-industry"></i>
+            <h3>Проектная организация</h3>
+        </div>
+
+        <nav class="header__nav">
+            <button class="header__btn" onclick="document.location='/Workers'">Сотрудники</button>
+            <button class="header__btn" onclick="document.location='/Projects'">Проекты</button>
+            <button class="header__btn" onclick="document.location='/Contracts'">Договоры</button>
+            <button class="header__btn" onclick="document.location='/Subcontractors'">Субподрядные организации</button>
+        </nav>
 {% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <form method="post" >
+<form method="post" >
 
-    </form>
-</div>
+</form>
 {% endblock %}

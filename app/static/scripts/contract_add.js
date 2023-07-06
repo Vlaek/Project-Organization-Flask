@@ -27,26 +27,18 @@ window.onclick = function(event) {
     };
 }
 
-function OnChange()
-{
-    if (document.getElementById("Name").value == '' || document.getElementById("Client").value == '' || $('.require-one:checked').length < 1)
-    {
+function OnChange() {
+    if (document.getElementById("Name").value == '' || document.getElementById("Client").value == '' || $('.require-one:checked').length < 1) {
         document.getElementById("btn1").setAttribute("disabled", "disabled");
-    }
-    else
-    {
+    } else {
         document.getElementById("btn1").removeAttribute("disabled");
     }
 }
 
-function OnChange2()
-{
-    if (document.getElementById("Name2").value == '' || document.getElementById("Client2").value == '')
-    {
+function OnChange2() {
+    if (document.getElementById("Name2").value == '' || document.getElementById("Client2").value == '') {
         document.getElementById("btn2").setAttribute("disabled", "disabled");
-    }
-    else
-    {
+    } else {
         document.getElementById("btn2").removeAttribute("disabled");
     }
 }
