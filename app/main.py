@@ -1,17 +1,18 @@
 from flask import Flask, render_template, request, redirect
-from config import hostname, user, password, db_name, port
 import pymysql
+from config import hostname, user, password, db_name, port
 from datetime import date
 
 app = Flask(__name__)
 app.debug = True
 
-db = pymysql.connect(host=hostname,
-                     port=port,
-                     user=user,
-                     password=password,
-                     database=db_name,
-                     cursorclass=pymysql.cursors.DictCursor)
+db = pymysql.connect(
+    host=hostname,
+    port=port,
+    user=user,
+    password=password,
+    database=db_name,
+    cursorclass=pymysql.cursors.DictCursor)
 
 
 @app.route('/')
@@ -34,6 +35,7 @@ def workers():
 
             insert_query = "INSERT INTO `Workers` (surname, forename, DOB, Speciality, Position) " \
                            "VALUES ('" + surname + "', '" + forename + "', '" + dob + "', '" + speciality + "', '" + position + "');"
+            print(surname, forename, dob, speciality, position)
             cursor.execute(insert_query)
 
             db.commit()
@@ -97,16 +99,15 @@ def workers():
 
             return redirect('/Workers')
     else:
-
         cursor = db.cursor()
         q = request.args.get('q')
 
         if q:
             sql = "SELECT * FROM Workers WHERE ((Surname LIKE '%" + q + "%')" \
-             "OR (Forename LIKE '%" + q + "%')" \
-             "OR (DOB LIKE '%" + q + "%')" \
-             "OR (Speciality LIKE '%" + q + "%')" \
-             "OR (Position LIKE '%" + q + "%'))"
+            "OR (Forename LIKE '%" + q + "%')" \
+            "OR (DOB LIKE '%" + q + "%')" \
+            "OR (Speciality LIKE '%" + q + "%')" \
+            "OR (Position LIKE '%" + q + "%'))"
         else:
             sql = 'SELECT * FROM Workers'
 
@@ -153,9 +154,10 @@ def workers():
         cursor.execute(sql_leader)
         count_leaders = cursor.fetchall()
 
-        cursor.execute("SELECT Projects.idProject, Projects.Name, Workers.idWorker FROM Workers INNER JOIN (Projects INNER "
-                       "JOIN Executors ON Projects.idProject = Executors.idProject) "
-                       "ON Workers.idWorker = Executors.idWorker ")
+        cursor.execute(
+            "SELECT Projects.idProject, Projects.Name, Workers.idWorker FROM Workers INNER JOIN (Projects INNER "
+            "JOIN Executors ON Projects.idProject = Executors.idProject) "
+            "ON Workers.idWorker = Executors.idWorker ")
 
         executors_check = cursor.fetchall()
 
@@ -168,10 +170,12 @@ def workers():
         for i in range(len(projects_check)):
             edit_executors_check.append(projects_check[i]['Name'])
 
-        return render_template('Workers.html', results=results, length=len(results), count_engineers=count_engineers,
+        return render_template('Workers.html', results=results, length=len(results),
+                               count_engineers=count_engineers,
                                count_technicians=count_technicians, count_assistants=count_assistants,
                                count_constructors=count_constructors, count_staffs=count_staffs,
-                               count_workers=count_workers, count_leaders=count_leaders, executors_check=executors_check,
+                               count_workers=count_workers, count_leaders=count_leaders,
+                               executors_check=executors_check,
                                projects_check=projects_check, edit_executors_check=edit_executors_check)
 
 
@@ -184,7 +188,6 @@ def worker_delete(worker_id):
     db.commit()
 
     return redirect('/Workers')
-
 
 @app.route('/Projects', methods=['POST', 'GET'])
 def projects():
@@ -261,13 +264,13 @@ def projects():
 
         if q:
             sql = "SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, " \
-                  "Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
+                  "Projects.EndDate, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
                   "Projects.Leader WHERE ((Workers.Surname LIKE '%" + q + "%') OR (Workers.Forename LIKE '%" + q + "%')" \
                   " OR (Projects.Name LIKE '%" + q + "%') OR (Projects.Equipment LIKE '%" + q + "%')" \
                   " OR (Projects.StartDate LIKE '%" + q + "%') OR (Projects.EndDate LIKE '%" + q + "%') OR (Projects.Cost LIKE '%" + q + "%'))"
         else:
             sql = "SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, " \
-                  "Projects.EndDate, Projects.Equipment, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
+                  "Projects.EndDate, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
                   "Projects.Leader"
 
         cursor.execute(sql)
@@ -567,4 +570,4 @@ def calculate_age(born):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

@@ -1,51 +1,87 @@
-.btn {
-    height:100px;
-    width:100px;
-    border-color:#c2e254 #9bb838 #9bb838 #c2e254;
-    border-style:solid;
-    border-width:1px;
-    background:#c2e254;
-    cursor:pointer;
-    width: 20%;
-    border-radius: 4px;
-    margin-left:150px;
-    margin-top:50px;
-    color: #000000;
-    font-size: 15px;
-    font-family: helvetica, serif;
-    text-decoration: none;
-    vertical-align: middle;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background: url(../img/bg.jpg);
+    background-size: cover;
+}
+
+.header {
+    height: 75px;
+    font-size: 24px;
+    color: white;
+    display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.header__title {
+	display: flex;
+	align-items: center;
+	user-select: none;
+}
+.header__title i {
+	margin-right: 10px;
+	font-size: 42px;
+}
+.header__title:hover {
+	color: #FFFF99;
+	cursor: pointer;
+}
+
+.header__nav {
+	margin-right: 15px;
+}
+
+.header__btn {
+	width: 200px;
+	height: 35px;
+	border-radius: 5px;
+	user-select: none;
+	font-size: 14px;
+	cursor: pointer;
+}
+.header__btn:hover {
+    background:#FFFF99;
+	border: 1px solid #FFCC66;
+}
+.header__btn:focus {
+    background:#ddd;
+	border: 1px solid #333;
+}
+.header__btn:active {
+    background:#ddd;
+	border: 1px solid #333;
+}
+
+.header__input {
+    width: 350px;
+    height: 35px;
+    border-radius: 5px;
+    padding-left: 10px;
+    outline: none;
 }
 
 .btn2 {
     margin-left:5px;
 }
 
-.btn:hover {
-    border-color:#FFCC66 #FFFF99 #FFFF99 #FFCC66;
-    border-style:solid;
-    border-width:1px;
-    background:#FFFF99;
-}
 
-.btn:focus {
-    background:#ddd;
-    border-color:#ddd #333 #333 #ddd;
-    border-style:solid;
-    border-width:1px;
-}
 
-.btn:active {
-    background:#ff0000;
-    border-color:#ddd #333 #333 #ddd;
-    border-style:solid;
-    border-width:1px;
-}
 
 a{
     margin-right: 5%;
     margin-left: 5%;
-    left: 5%; - расстояние от края
+    left: 5%;
     right: 5%;
     text-align: center;
 }
@@ -98,14 +134,14 @@ thead th, tfoot th, tfoot td {
 }
 
 .modal {
-    position:fixed;
-    display:flex;
-    width:100%;
-    height:100%;
-    justify-content:center;
-    align-items:center;
-    background:rgba(0,0,0,.7);
-    z-index:100;
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,.7);
+    z-index: 100;
 }
 
 .checkselect {

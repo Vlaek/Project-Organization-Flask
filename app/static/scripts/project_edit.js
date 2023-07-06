@@ -1,6 +1,5 @@
 function modal_data(id, name, leader, equipment, start_date, end_date, cost) {
-
-    var a = document.getElementById("id02").style.display='block';
+    let a = document.getElementById("id02").style.display='block';
     document.getElementById("Name2").value = name;
     document.getElementById("Leader2").value = leader;
     document.getElementById("StartDate2").value = dateFormat(start_date, ".", "-");

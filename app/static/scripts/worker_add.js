@@ -1,33 +1,20 @@
-var modal1 = document.getElementById('id01');
-var modal2 = document.getElementById('id02');
+let modal1 = document.getElementById('id01');
 
 window.onclick = function(event) {
     if (event.target == modal1) {
         modal1.style.display = "none";
     };
 
-    if (event.target == modal2) {
-        modal2.style.display = "none";
-    };
-
     cancel.onclick = function() {
         modal1.style.display = "none";
-    };
-
-    cancel2.onclick = function() {
-        modal2.style.display = "none";
     };
 
     kreuz.onclick = function() {
         modal1.style.display = "none";
     };
 
-    kreuz2.onclick = function() {
-        modal2.style.display = "none";
-    };
-
     function getRandomInRange(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function formatDate(year, month, day) {
@@ -77,30 +64,16 @@ window.onclick = function(event) {
     };
 }
 
-function OnChange()
-{
-    if (document.getElementById("forename").value == '' || document.getElementById("surname").value == ''
-        || document.getElementById("DOB").value == '' || $('.require-one:checked').length < 1)
-    {
+const forename = document.getElementById("forename").value;
+const surname = document.getElementById("surname").value;
+const dob = document.getElementById("DOB").value;
+
+function OnChange() {
+    if (forename.value == '' || surname.value == '' || dob.value == '') {
         document.getElementById("btn1").setAttribute("disabled", "disabled");
-    }
-    else
-    {
+        console.log("da")
+    } else {
         document.getElementById("btn1").removeAttribute("disabled");
-    }
-}
-
-
-function OnChange2()
-{
-    if (document.getElementById("Forename2").value == '' || document.getElementById("Surname2").value == ''
-        || document.getElementById("DOB2").value == '' || $('.require-one:checked').length < 1)
-    {
-        document.getElementById("btn2").setAttribute("disabled", "disabled");
-    }
-    else
-    {
-        document.getElementById("btn2").removeAttribute("disabled");
     }
 }
 
