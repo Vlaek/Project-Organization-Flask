@@ -167,8 +167,11 @@ def workers():
 
         edit_executors_check = []
 
+        for i in executors_check:
+            print(i)
+
         for i in range(len(projects_check)):
-            edit_executors_check.append(projects_check[i]['Name'])
+            edit_executors_check.append(projects_check[i]['name'])
 
         return render_template('Workers.html', results=results, length=len(results),
                                count_engineers=count_engineers,
@@ -196,7 +199,6 @@ def projects():
 
             name = request.form['Name']
             cost = request.form['Cost']
-            equipment = request.form['Equipment']
             start_date = request.form['StartDate']
             end_date = request.form['EndDate']
             leader = request.form['Leader']
@@ -214,8 +216,8 @@ def projects():
 
             id_leader = cursor.fetchall()
 
-            insert_query = "INSERT INTO `Projects` (Name, StartDate, EndDate, Equipment, Cost, Leader) " \
-                           "VALUES ('" + name + "', '" + start_date + "', '" + end_date + "', '" + equipment + "', '" + cost + "', '" + str(id_leader[0]["idWorker"]) + "');"
+            insert_query = "INSERT INTO `Projects` (name, startDate, endDate, cost, leader) " \
+                           "VALUES ('" + name + "', '" + start_date + "', '" + end_date + "', '" + cost + "', '" + str(id_leader[0]["idWorker"]) + "');"
 
             cursor.execute(insert_query)
 
