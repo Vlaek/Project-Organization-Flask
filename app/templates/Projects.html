@@ -5,15 +5,18 @@
 {% endblock %}
 
 {%block header%}
-    <h3  class="my-0 mr-md-auto text-white">Проекты</h3>
-    <form method="GET">
-        <input type="text" placeholder="Поиск" name="q" size="50" value="{{ request.args.get('q', '') }}">
-        <input class="btn2" type="submit" name="action" value="Искать">
-    </form>
-    <div>
-        <button class="btn2" onclick="document.getElementById('id01').style.display='block'">Добавить проект</button>
-        <button class="btn2" onclick="document.location='/'">Назад</button>
+    <div class="header__title">
+        <i class="fa-solid fa-industry"></i>
+        <h3>Проекты</h3>
     </div>
+    <form method="GET">
+        <input class="header__input" type="text" placeholder="Поиск..." name="q" size="50" value="{{ request.args.get('q', '') }}">
+        <input class="header__btn" type="submit" name="action" value="Искать">
+    </form>
+    <nav class="header__nav">
+        <button class="header__btn" onclick="document.getElementById('id01').style.display='block'">Добавить проект</button>
+        <button class="header__btn" onclick="document.location='/'">Назад</button>
+    </nav>
 {% endblock %}
 
 {% block body %}
@@ -102,45 +105,40 @@
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/project_add.js') }}"></script>
 
 <form method="post" >
-    <table class="table table-bordered table-dark">
-        <thead>
+    <table class="table">
+        <thead class="table__head">
             <tr>
-                <th scope="col">id</th>
-                <th scope="col">Название</th>
-                <th scope="col">Руководитель</th>
-                <th scope="col">Оборудование</th>
-                <th scope="col">Дата начала</th>
-                <th scope="col">Дата окончания</th>
-                <th scope="col">Стоимость</th>
-                <th colspan="2">Действия</th>
+                <th class="table__column" scope="col">id</th>
+                <th class="table__column" scope="col">Название</th>
+                <th class="table__column" scope="col">Руководитель</th>
+                <th class="table__column" scope="col">Оборудование</th>
+                <th class="table__column" scope="col">Дата начала</th>
+                <th class="table__column" scope="col">Дата окончания</th>
+                <th class="table__column" scope="col">Стоимость</th>
+                <th class="table__column" colspan="2">Действия</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table__body">
             <tr>
             {% for row in results %}
-                <td scope="col">{{ row.idProject }}</td>
-                <td scope="col">{{ row.Name }}</td>
-                <td scope="col">{{ row.Surname }} {{ row.Forename }}</td>
-                {% if row.Equipment %}
-                    <td scope="col">{{ row.Equipment }}</td>
-                {% else %}
-                    <td scope="col">Отсутствует</td>
-                {% endif %}
-                <td scope="col">{{ row.StartDate }}</td>
-                <td scope="col">{{ row.EndDate }}</td>
-                <td scope="col">{{ row.Cost }}</td>
-                <td>
-                    <a href="#"
+                <td class="table__column" scope="col">{{ row.idProject }}</td>
+                <td class="table__column" scope="col">{{ row.Name }}</td>
+                <td class="table__column" scope="col">{{ row.Surname }} {{ row.Forename }}</td>
+                <td class="table__column" scope="col">{{ row.StartDate }}</td>
+                <td class="table__column" scope="col">{{ row.EndDate }}</td>
+                <td class="table__column" scope="col">{{ row.Cost }}</td>
+                <td class="table__column">
+                    <a class="table__btn" href="#"
                         onclick="modal_data({{ row.idProject }}, '{{ row.Name }}', '{{ row.Forename }} {{ row.Surname }}',
                          '{{ row.Equipment }}', '{{ row.StartDate }}', '{{ row.EndDate }}', '{{ row.Cost }}')">Редактировать</a>
                 </td>
-                <td>
-                    <a href="/Project/delete/{{ row.idProject }}">Удалить</a>
+                <td class="table__column">
+                    <a class="table__btn" href="/Project/delete/{{ row.idProject }}">Удалить</a>
                 </td>
                 </tr>
             {% endfor %}
         </tbody>
-        <th colspan="9">{{ length }} проекта стоимостью {{ project_sum }} </th>
+        <th class="table__footer" colspan="9">{{ length }} проекта стоимостью {{ project_sum }} </th>
     </table>
     <script type="text/javascript" src="{{ url_for('static', filename='scripts/project_edit.js') }}"></script>
 </form>
