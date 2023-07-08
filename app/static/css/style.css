@@ -114,6 +114,7 @@ body {
     width: 100%;
     height: 100%;
     outline: none;
+    padding-left: 15px;
 }
 
 .modal {
@@ -124,8 +125,9 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
+    z-index: 100;
     top: 0;
+    font-size: 16px;
 }
 
 .modal__content {
@@ -174,10 +176,18 @@ body {
     color: #6e6e6e;
 }
 
-.modal-input {
+.modal__input {
     width: 100%;
     height: 30px;
     margin-bottom: 15px;
+    padding: 5px;
+}
+
+.modal__checkbox {
+    overflow: auto;
+    width: 100%;
+    height: 80px;
+    border: 2px solid #d3d3d3;
     padding: 5px;
 }
 

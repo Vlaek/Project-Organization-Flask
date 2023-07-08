@@ -1,124 +1,110 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    Сотрудники
-{% endblock %}
+{% block title %} Сотрудники {% endblock %}
 
-{%block header%}
-    <div class="header__title">
-        <i class="fa-solid fa-industry"></i>
-        <h3>Сотрудники</h3>
-    </div>
-    <form method="GET">
-        <input class="header__input" type="text" placeholder="Поиск..." name="q" size="50" value="{{ request.args.get('q', '') }}">
-        <input class="header__btn" type="submit" name="action" value="Искать">
-    </form>
-    <nav class="header__nav">
-        <button class="header__btn" id="add">Добавить сотрудника</button>
-        <button class="header__btn" onclick="document.location='/'">Назад</button>
-    </nav>
+{% block header_title %} Сотрудники {% endblock %}
+
+{%block header__nav%}
+<form method="GET">
+    <input class="header__input" type="text" placeholder="Поиск..." name="q" size="50" value="{{ request.args.get('q', '') }}">
+    <input class="header__btn" type="submit" name="action" value="Искать">
+</form>
+<nav class="header__nav">
+    <button data-id="modalAdd" class="header__btn btn-open" id="headerBtnAdd">Добавить сотрудника</button>
+    <button class="header__btn" onclick="document.location='/'">Назад</button>
+</nav>
 {% endblock %}
 
 {% block body %}
 <form method="post">
-    <div id="modal1" class="modal" tabindex="-1" role="dialog">
+    <div id="modalAdd" class="modal" tabindex="-1" role="dialog">
         <div class="modal__content">
             <div class="modal__header">
                 <p class="modal__title">Добавление сотрудника</p>
-                <button type="button" id="btn-close1" class="btn-close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal__body">
+                <input class="modal__input" name="id" hidden>
                 <label class="modal__label" for="forename">Имя</label>
-                <input class="modal-input" id="forename" maxlength="100" name="forename" placeholder="Введите имя сотрудника...">
+                <input class="modal__input" id="forename" maxlength="100" name="forename" placeholder="Введите имя сотрудника...">
                 <label class="modal__label" for="surname">Фамилия</label>
-                <input class="modal-input" id="surname" maxlength="100" name="surname" placeholder="Введите фамилию сотрудника...">
+                <input class="modal__input" id="surname" maxlength="100" name="surname" placeholder="Введите фамилию сотрудника...">
                 <label class="modal__label" for="DOB">Дата рождения</label>
-                <input class="modal-input" id="DOB" name="DOB" type="date" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00"/>
-                <label class="modal__label" for="DOB">Специальность</label>
-                <select class="modal-input" id="speciality" name="speciality">
+                <input class="modal__input" id="DOB" name="DOB" type="date" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00"/>
+                <label class="modal__label" for="speciality">Специальность</label>
+                <select class="modal__input" id="speciality" name="speciality">
                     <option>Инженер</option>
                     <option>Техник</option>
                     <option>Лаборант</option>
                     <option>Конструктор</option>
                     <option>Обслуживающий персонал</option>
                 </select>
-                <label class="modal__label" for="DOB">Должность</label>
-                <select class="modal-input" id="position" name="position">
+                <label class="modal__label" for="position">Должность</label>
+                <select class="modal__input" id="position" name="position">
                     <option>Рабочий</option>
                     <option>Начальник</option>
                 </select>
-
-                <div>
+                <div class="modal__checkbox">
                     {% for project in projects_check %}
                         <input type="checkbox"
                         name="projects" value="{{ project.idProject }}" onchange="OnChange()" > {{ project.name }}<br>
                     {% endfor %}
                 </div>
-
             </div>
+
             <div class="modal__footer">
                 <button class="modal__btn" type="button" id="random">Зарандомить</button>
                 <div class="modal__control">
-                    <input class="modal__btn" id="btn1" type="submit" name="action" value="Добавить">
-                    <button class="modal__btn" type="button" id="cancel" data-dismiss="modal">Отмена</button>
+                    <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Добавить">
+                    <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
                 </div>
             </div>
         </div>
     </div>
 
-<!--    <div id="id02" class="modal" tabindex="-1" role="dialog">-->
-<!--        <div class="modal-dialog" role="document">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title">Редактировать сотрудника</h5>-->
-<!--                    <input class="form-control" id="Worker2" name="Worker2" hidden>-->
-<!--                    <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    <input class="form-control" id="Forename2" maxlength="100" name="Forename2"-->
-<!--                   placeholder="Введите имя сотрудника" onchange="OnChange2()"><br>-->
-<!--                    <input class="form-control" id="Surname2" maxlength="100" name="Surname2"-->
-<!--                   placeholder="Введите фамилию сотрудника" onchange="OnChange2()"><br>-->
-<!--                    <div class="form-group">-->
-<!--                    <input id="DOB2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="DOB2"-->
-<!--                       onchange="OnChange2()" type="date" style="width: 220px;"/>-->
-<!--                    <label> - Дата рождения </label>-->
-<!--                    <br>-->
-<!--                    <select id="Speciality2" name="Speciality2" style="width: 220px;">-->
-<!--                        <option>Инженер</option>-->
-<!--                        <option>Техник</option>-->
-<!--                        <option>Лаборант</option>-->
-<!--                        <option>Конструктор</option>-->
-<!--                        <option>Обслуживающий персонал</option>-->
-<!--                    </select>-->
-<!--                    <label> - Специальность </label>-->
-<!--                    <br>-->
-<!--                    <select id="Position2" name="Position2" style="width: 220px;">-->
-<!--                        <option>Рабочий</option>-->
-<!--                        <option>Начальник</option>-->
-<!--                    </select>-->
-<!--                    <label> - Должность </label>-->
-<!--                    </div>-->
-
-<!--                    <div style="overflow: auto; width: 100%; height: 80px; border: 1px solid #336699; padding-left: 5px">-->
-<!--                        {% for project in projects_check %}-->
-<!--                            <input class="require-one" type="checkbox" id="{{ project.Name }}"-->
-<!--                            name="projects2" value="{{ project.idProject }}" onchange="OnChange2()" > {{ project.Name }}<br>-->
-<!--                        {% endfor %}-->
-<!--                    </div>-->
-
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <input id="btn2" type="submit" name="action" value="Изменить">-->
-<!--                    <button type="button" id="cancel2" data-dismiss="modal">Отмена</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div id="modalEdit" class="modal" tabindex="-1" role="dialog">
+        <div class="modal__content">
+            <div class="modal__header">
+                <p class="modal__title">Редактировать сотрудника</p>
+                <button type="button" class="btn-close close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal__body">
+                <input class="modal__input" name="id2" hidden>
+                <label class="modal__label" for="forename2">Имя</label>
+                <input class="modal__input" id="forename2" maxlength="100" name="forename2" placeholder="Введите имя сотрудника...">
+                <label class="modal__label" for="surname2">Фамилия</label>
+                <input class="modal__input" id="surname2" maxlength="100" name="surname2" placeholder="Введите фамилию сотрудника...">
+                <label class="modal__label" for="DOB2">Дата рождения</label>
+                <input class="modal__input" id="DOB2" name="DOB2" type="date" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00"/>
+                <label class="modal__label" for="DOB2">Специальность</label>
+                <select class="modal__input" id="speciality2" name="speciality2">
+                    <option>Инженер</option>
+                    <option>Техник</option>
+                    <option>Лаборант</option>
+                    <option>Конструктор</option>
+                    <option>Обслуживающий персонал</option>
+                </select>
+                <label class="modal__label" for="position2">Должность</label>
+                <select class="modal__input" id="position2" name="position2">
+                    <option>Рабочий</option>
+                    <option>Начальник</option>
+                </select>
+                <div class="modal__checkbox">
+                    {% for project in projects_check %}
+                        <input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects2" value="{{ project.name }}"> {{ project.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Изменить">
+                <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
 
     <table class="table">
         <thead class="table__head">
@@ -141,10 +127,10 @@
                 <td class="table__column" scope="col">{{ row.DOB }}</td>
                 <td class="table__column" scope="col">{{ row.Age }}</td>
                 <td class="table__column" scope="col">
-                    <select class="table__select" id="ProjectsSelect" name="{{ row.idWorker }}">
+                    <select class="table__select" id="worker-{{ row.idWorker }}" name="{{ row.idWorker }}">
                         {% for executor in executors_check %}
                             {% if row.idWorker == executor.idWorker %}
-                                <option>{{ executor.name }}</option>
+                                <option value="project-{{ executor.idProject }}">{{ executor.Name }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -152,7 +138,7 @@
                 <td class="table__column" scope="col">{{ row.speciality }}</td>
                 <td class="table__column" scope="col">{{ row.position }}</td>
                 <td class="table__column">
-                    <a class="table__btn" href="#" id="edit">Редактировать</a>
+                    <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idWorker }}, {{ row.surname }}, {{ row.forename }}, {{ row.DOB }}, {{ row.speciality }}, {{ row.position }}" >Редактировать</a>
                 </td>
                 <td class="table__column">
                     <a class="table__btn" href="/Worker/delete/{{ row.idWorker }}">Удалить</a>

@@ -1,22 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    Проекты
-{% endblock %}
+{% block title %} Проекты {% endblock %}
 
-{%block header%}
-    <div class="header__title">
-        <i class="fa-solid fa-industry"></i>
-        <h3>Проекты</h3>
-    </div>
-    <form method="GET">
-        <input class="header__input" type="text" placeholder="Поиск..." name="q" size="50" value="{{ request.args.get('q', '') }}">
-        <input class="header__btn" type="submit" name="action" value="Искать">
-    </form>
-    <nav class="header__nav">
-        <button class="header__btn" onclick="document.getElementById('id01').style.display='block'">Добавить проект</button>
-        <button class="header__btn" onclick="document.location='/'">Назад</button>
-    </nav>
+{% block header_title %} Проекты {% endblock %}
+
+{%block header__nav%}
+<form method="GET">
+    <input class="header__input" type="text" placeholder="Поиск..." name="q" size="50" value="{{ request.args.get('q', '') }}">
+    <input class="header__btn" type="submit" name="action" value="Искать">
+</form>
+<nav class="header__nav">
+    <button class="header__btn" id="add">Добавить проект</button>
+    <button class="header__btn" onclick="document.location='/'">Назад</button>
+</nav>
 {% endblock %}
 
 {% block body %}
@@ -53,7 +49,7 @@
                     <label> - Руководитель проекта </label>
                     <div class="modal-footer">
                         <input id="btn1" type="submit" name="action" value="Добавить">
-                        <button type="button" id="cancel" data-dismiss="modal">Отмена</button>
+                        <button type="button" data-dismiss="modal">Отмена</button>
                     </div>
                 </div>
             </div>
@@ -93,7 +89,7 @@
                     <label> - Руководитель проекта </label>
                     <div class="modal-footer">
                         <input id="btn2" type="submit" name="action" value="Изменить">
-                        <button type="button" id="cancel2" data-dismiss="modal">Отмена</button>
+                        <button class="btn-close" type="button" data-dismiss="modal">Отмена</button>
                     </div>
                 </div>
             </div>

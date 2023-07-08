@@ -1,25 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    Главная страница
-{% endblock %}
+{% block title %} Главная страница {% endblock %}
 
-{%block header%}
-        <div class="header__title">
-            <i class="fa-solid fa-industry"></i>
-            <h3>Проектная организация</h3>
-        </div>
 
-        <nav class="header__nav">
-            <button class="header__btn" onclick="document.location='/Workers'">Сотрудники</button>
-            <button class="header__btn" onclick="document.location='/Projects'">Проекты</button>
-            <button class="header__btn" onclick="document.location='/Contracts'">Договоры</button>
-            <button class="header__btn" onclick="document.location='/Subcontractors'">Субподрядные организации</button>
-        </nav>
-{% endblock %}
+{% block header_title %} Проектная организация {% endblock %}
 
-{% block body %}
-<form method="post" >
-
-</form>
+{%block header__nav%}
+<nav class="header__nav">
+    <button class="header__btn" onclick="document.location='/Workers'">Сотрудники</button>
+    <button class="header__btn" onclick="document.location='/Projects'">Проекты</button>
+    <button class="header__btn" onclick="document.location='/Contracts'">Договоры</button>
+    <button class="header__btn" onclick="document.location='/Subcontractors'">Субподрядные организации</button>
+</nav>
 {% endblock %}
