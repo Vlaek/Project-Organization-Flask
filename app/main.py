@@ -35,7 +35,7 @@ def workers():
 
             insert_query = "INSERT INTO `Workers` (surname, forename, DOB, Speciality, Position) " \
                            "VALUES ('" + surname + "', '" + forename + "', '" + dob + "', '" + speciality + "', '" + position + "');"
-            print(surname, forename, dob, speciality, position)
+
             cursor.execute(insert_query)
 
             db.commit()
@@ -52,6 +52,7 @@ def workers():
             for row in range(len(executor)):
                 insert_query = "INSERT INTO `Executors` (idProject, idWorker) " \
                                "VALUES ('" + str(executor[row]) + "', '" + str(max(ids_workers)) + "');"
+                print('Добавлен')
                 cursor.execute(insert_query)
                 db.commit()
 
@@ -59,13 +60,15 @@ def workers():
 
         elif request.form['action'] == 'Изменить':
 
-            id2 = request.form['Worker2']
-            forename2 = request.form['Forename2']
-            surname2 = request.form['Surname2']
+            id2 = request.form['id2']
+            forename2 = request.form['forename2']
+            surname2 = request.form['surname2']
             dob2 = request.form['DOB2']
-            speciality2 = request.form['Speciality2']
-            position2 = request.form['Position2']
+            speciality2 = request.form['speciality2']
+            position2 = request.form['position2']
             executor2 = request.form.getlist('projects2')
+
+            print(executor2);
 
             cursor = db.cursor()
 
@@ -92,6 +95,7 @@ def workers():
                 ids_workers.append(results[i]['idWorker'])
 
             for row in range(len(executor2)):
+                print('da', str(executor2[row]))
                 insert_query = "INSERT INTO `Executors` (idProject, idWorker) " \
                                "VALUES ('" + str(executor2[row]) + "', '" + str(id2) + "');"
                 cursor.execute(insert_query)
@@ -167,9 +171,6 @@ def workers():
 
         edit_executors_check = []
 
-        for i in executors_check:
-            print(i)
-
         for i in range(len(projects_check)):
             edit_executors_check.append(projects_check[i]['name'])
 
@@ -179,7 +180,7 @@ def workers():
                                count_constructors=count_constructors, count_staffs=count_staffs,
                                count_workers=count_workers, count_leaders=count_leaders,
                                executors_check=executors_check,
-                               projects_check=projects_check, edit_executors_check=edit_executors_check)
+                               projects_check=projects_check)
 
 
 @app.route('/Worker/delete/<int:worker_id>')
