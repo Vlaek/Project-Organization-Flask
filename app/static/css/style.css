@@ -20,7 +20,16 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Header */
+header {
+    height: 75px;
+}
+
 .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 75px;
     font-size: 24px;
     color: white;
@@ -29,6 +38,7 @@ body {
 	align-items: center;
 	background: #161B22;
 	padding: 0 15px;
+	margin: 0 auto;
 }
 
 .header__title {
@@ -74,6 +84,9 @@ body {
     outline: none;
 }
 
+
+/* Main - Table */
+
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -84,6 +97,7 @@ body {
     background: #FFCC66;
     color: black;
     padding: 10px 0;
+    text-align: center;
 }
 
 .table__body .table__column {
@@ -116,6 +130,13 @@ body {
     outline: none;
     padding-left: 15px;
 }
+
+.table__footer {
+    font-weight: bold;
+}
+
+
+/* Modal Window*/
 
 .modal {
     position: fixed;
@@ -192,8 +213,14 @@ body {
 .modal__checkbox {
     overflow: auto;
     width: 100%;
+    max-width: 400px;
     height: 80px;
     border: 2px solid #d3d3d3;
+    padding: 5px;
+}
+
+.modal__checkbox label {
+    display: block;
     padding: 5px;
 }
 
@@ -225,12 +252,14 @@ body {
     margin-left: 15px;
 }
 
+
+/* Множественный селект */
+
 .checkselect {
 	position: relative;
 	display: inline-block;
-	min-width: 100%;
+	min-width: 200px;
 	text-align: left;
-    margin-bottom: 20px;
 }
 .checkselect-control {
 	position: relative;
@@ -242,7 +271,7 @@ body {
 	width: 100%;
 	margin: 0;
 	padding-left: 5px;
-	height: 35px;
+	height: 30px;
 }
 .checkselect-over {
 	position: absolute;

@@ -194,20 +194,20 @@ def projects():
     if request.method == "POST":
         if request.form['action'] == 'Добавить':
 
-            name = request.form['Name']
-            cost = request.form['Cost']
-            start_date = request.form['StartDate']
-            end_date = request.form['EndDate']
-            leader = request.form['Leader']
+            name = request.form['name']
+            cost = request.form['cost']
+            start_date = request.form['startDate']
+            end_date = request.form['endDate']
+            leader = request.form['leader']
 
             cursor = db.cursor()
 
-            name_leader = leader.split(" ")
+            id_leader = leader.split("leader-")
 
             sql = "SELECT Workers.Surname, Workers.Forename, Workers.idWorker " \
                   "FROM WORKERS " \
                   "GROUP BY Workers.Surname, Workers.Forename, Workers.idWorker " \
-                  "HAVING (((Workers.Surname)='" + name_leader[1] + "') AND ((Workers.Forename)='" + name_leader[0] + "'))"
+                  "HAVING Workers.idWorker='" + id_leader[1] + "'"
 
             cursor.execute(sql)
 
@@ -224,22 +224,21 @@ def projects():
 
         elif request.form['action'] == 'Изменить':
 
-            id2 = request.form['idProject2']
-            name2 = request.form['Name2']
-            cost2 = request.form['Cost2']
-            equipment2 = request.form['Equipment2']
-            start_date2 = request.form['StartDate2']
-            end_date2 = request.form['EndDate2']
-            leader2 = request.form['Leader2']
+            id2 = request.form['id2']
+            name2 = request.form['name2']
+            cost2 = request.form['cost2']
+            start_date2 = request.form['startDate2']
+            end_date2 = request.form['endDate2']
+            leader2 = request.form['leader2']
 
             cursor = db.cursor()
 
-            name_leader = leader2.split(" ")
+            id_leader = leader2.split("leader-")
 
             sql = "SELECT Workers.Surname, Workers.Forename, Workers.idWorker " \
                   "FROM WORKERS " \
                   "GROUP BY Workers.Surname, Workers.Forename, Workers.idWorker " \
-                  "HAVING (((Workers.Surname)='" + name_leader[1] + "') AND ((Workers.Forename)='" + name_leader[0] + "'))"
+                  "HAVING Workers.idWorker='" + id_leader[1] + "'"
 
             cursor.execute(sql)
 
@@ -247,7 +246,7 @@ def projects():
 
             insert_query = "UPDATE Projects SET " \
                            "Name ='" + name2 + "', Cost='" + cost2 + \
-                           "', Equipment='" + equipment2 + "', StartDate='" + start_date2 + \
+                           "', StartDate='" + start_date2 + \
                            "', EndDate='" + end_date2 + "', Leader='" + str(id_leader2[0]["idWorker"]) + "' WHERE idProject='" + str(id2) + "'"
 
             cursor.execute(insert_query)
@@ -269,7 +268,7 @@ def projects():
                   " OR (Projects.StartDate LIKE '%" + q + "%') OR (Projects.EndDate LIKE '%" + q + "%') OR (Projects.Cost LIKE '%" + q + "%'))"
         else:
             sql = "SELECT Workers.Surname, Workers.Forename, Projects.idProject, Projects.Name, Projects.StartDate, " \
-                  "Projects.EndDate, Projects.Cost FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
+                  "Projects.EndDate, Projects.Cost, Projects.Leader FROM Workers INNER JOIN Projects ON Workers.idWorker = " \
                   "Projects.Leader"
 
         cursor.execute(sql)
@@ -281,7 +280,7 @@ def projects():
         for i in range(len(results)):
             project_sum += results[i]['Cost']
 
-        cursor.execute("SELECT Workers.Surname, Workers.Forename FROM Workers WHERE Workers.Position = 'Начальник'")
+        cursor.execute("SELECT Workers.surname, Workers.forename, Workers.idWorker FROM Workers WHERE Workers.position = 'Начальник'")
 
         leaders = cursor.fetchall()
 

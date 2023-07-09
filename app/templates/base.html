@@ -9,12 +9,15 @@
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
-        <header class="header">
-            <div class="header__title">
-                <i class="fa-solid fa-industry"></i>
-                <h3>{% block header_title %} {% endblock %}</h3>
+        <header>
+            <div class="header">
+                <div class="header__title">
+                    <i class="fa-solid fa-industry"></i>
+                    <h3>{% block header_title %} {% endblock %}</h3>
+                </div>
+                {% block header__nav %} {% endblock %}
             </div>
-            {% block header__nav %} {% endblock %}
+
         </header>
         <main>
             {% block body %}{% endblock %}
