@@ -52,7 +52,6 @@ def workers():
             for row in range(len(executor)):
                 insert_query = "INSERT INTO `Executors` (idProject, idWorker) " \
                                "VALUES ('" + str(executor[row]) + "', '" + str(max(ids_workers)) + "');"
-                print('Добавлен')
                 cursor.execute(insert_query)
                 db.commit()
 
@@ -67,8 +66,6 @@ def workers():
             speciality2 = request.form['speciality2']
             position2 = request.form['position2']
             executor2 = request.form.getlist('projects2')
-
-            print(executor2);
 
             cursor = db.cursor()
 
@@ -95,7 +92,6 @@ def workers():
                 ids_workers.append(results[i]['idWorker'])
 
             for row in range(len(executor2)):
-                print('da', str(executor2[row]))
                 insert_query = "INSERT INTO `Executors` (idProject, idWorker) " \
                                "VALUES ('" + str(executor2[row]) + "', '" + str(id2) + "');"
                 cursor.execute(insert_query)

@@ -95,13 +95,15 @@
                 </select>
                 <div class="modal__checkbox">
                     {% for project in projects_check %}
-                        <input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects2" value="{{ project.name }}"> {{ project.name }}<br>
+                        <input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects2" value="{{ project.idProject }}"> {{ project.name }}<br>
                     {% endfor %}
                 </div>
             </div>
-            <div class="modal-footer">
-                <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Изменить">
-                <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
+            <div class="modal__footer">
+                <div class="modal__control modal__control_edit">
+                    <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Изменить">
+                    <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
+                 </div>
             </div>
         </div>
     </div>
@@ -154,7 +156,5 @@
         начальников {{ count_leaders[0]['LEADER'] }}.</th>
     </table>
 </form>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts/worker_add.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts/worker_edit.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/worker.js') }}"></script>
 {% endblock %}

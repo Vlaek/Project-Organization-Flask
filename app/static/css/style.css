@@ -138,6 +138,12 @@ body {
     min-width: 400px;
 }
 
+.modal__control_edit {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
 .modal__header {
     display: flex;
     justify-content: space-between;
