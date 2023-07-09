@@ -10,133 +10,117 @@
     <input class="header__btn" type="submit" name="action" value="Искать">
 </form>
 <nav class="header__nav">
-    <button class="header__btn" id="add">Добавить проект</button>
+    <button data-id="modalAdd" class="header__btn btn-open" id="headerBtnAdd">Добавить проект</button>
     <button class="header__btn" onclick="document.location='/'">Назад</button>
 </nav>
 {% endblock %}
 
 {% block body %}
 <form method="post">
-    <div id="id01" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Добавление проекта</h5>
-                    <button type="button" id="kreuz" class="close" data-dismiss="modal" aria-label="Close">
+    <div id="modalAdd" class="modal" tabindex="-1" role="dialog">
+        <div class="modal__content">
+            <div class="modal__header">
+                <p class="modal__title">Добавление проекта</p>
+                <button type="button" class="btn-close close">
                     <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input class="form-control" id="Name" maxlength="100" name="Name"
-                   placeholder="Введите название проекта" onchange="OnChange()"><br>
-                    <input class="form-control" id="Cost" min="0.00" max="100000000000000" name="Cost" type="number"
-                   step="0.01" placeholder="Стоимость" onchange="OnChange()"><br>
-                    <input class="form-control" id="Equipment" maxlength="100" name="Equipment"
-                   placeholder="Введите оборудование (необязательно)" onchange="OnChange()"><br>
-                    <input id="StartDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="StartDate"
-                       onchange="OnChange()" type="date" style="width: 220px;"/>
-                    <label> - Дата начала </label>
-                    <br>
-                    <input id="EndDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="EndDate"
-                       onchange="OnChange()" type="date" style="width: 220px;"/>
-                    <label> - Дата окончания </label>
-                    <br>
-                    <select id="Leader" name="Leader" style="width: 220px;">
-                        {% for leader in leaders %}
-                            <option>{{ leader.Forename }} {{ leader.Surname }}</option>
-                        {% endfor %}
-                    </select>
-                    <label> - Руководитель проекта </label>
-                    <div class="modal-footer">
-                        <input id="btn1" type="submit" name="action" value="Добавить">
-                        <button type="button" data-dismiss="modal">Отмена</button>
-                    </div>
+                </button>
+            </div>
+            <div class="modal__body">
+                <input class="modal__input" name="id" hidden>
+                <label class="modal__label" for="name">Название</label>
+                <input class="modal__input" id="name" maxlength="100" name="name" placeholder="Введите название проекта...">
+                <label class="modal__label" for="cost">Стоимость</label>
+                <input class="modal__input" id="cost" min="0.00" max="100000000000000" name="cost" type="number"  step="0.01" placeholder="Введите стоимость...">
+                <label class="modal__label" for="startDate">Дата начала</label>
+                <input class="modal__input" id="startDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="startDate" type="date"/>
+                <label class="modal__label" for="startDate">Дата окончания</label>
+                <input class="modal__input" id="endDate" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="endDate" type="date"/>
+                <label class="modal__label" for="leader">Руководитель проекта</label>
+                <select class="modal__input" id="leader" name="leader">
+                    {% for leader in leaders %}
+                        <option value="leader-{{ leader.idWorker }}">{{ leader.forename }} {{ leader.surname }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal__footer">
+                <div class="modal__control modal__control_edit">
+                    <input class="modal__btn modalBtnAdd" type="submit" name="action" value="Добавить">
+                    <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
                 </div>
             </div>
         </div>
     </div>
 
-     <div id="id02" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Редактирование проекта</h5>
-                    <input class="form-control" id="idProject2" name="idProject2" hidden>
-                    <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">
+     <div id="modalEdit" class="modal" tabindex="-1" role="dialog">
+        <div class="modal__content">
+            <div class="modal__header">
+                <p class="modal__title">Редактирование проекта</p>
+                <button type="button" class="btn-close close">
                     <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input class="form-control" id="Name2" maxlength="100" name="Name2"
-                   placeholder="Введите название проекта" onchange="OnChange2()"><br>
-                    <input class="form-control" id="Cost2" min="0.00" max="100000000000000" name="Cost2" type="number"
-                   step="0.01" placeholder="Стоимость" onchange="OnChange2()"><br>
-                    <input class="form-control" id="Equipment2" maxlength="100" name="Equipment2"
-                   placeholder="Введите оборудование (необязательно)" onchange="OnChange2()"><br>
-                    <input id="StartDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="StartDate2"
-                       onchange="OnChange2()" type="date"/>
-                    <label> - Дата начала </label>
-                    <br>
-                    <input id="EndDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="EndDate2"
-                       onchange="OnChange2()" type="date"/>
-                    <label> - Дата окончания </label>
-                    <br>
-                    <select id="Leader2" name="Leader2">
-                        {% for leader in leaders %}
-                            <option>{{ leader.Forename }} {{ leader.Surname }}</option>
-                        {% endfor %}
-                    </select>
-                    <label> - Руководитель проекта </label>
-                    <div class="modal-footer">
-                        <input id="btn2" type="submit" name="action" value="Изменить">
-                        <button class="btn-close" type="button" data-dismiss="modal">Отмена</button>
-                    </div>
+                </button>
+            </div>
+            <div class="modal__body">
+                <input class="modal__input" name="id2" hidden>
+                <label class="modal__label" for="name2">Название проекта</label>
+                <input class="modal__input" id="name2" maxlength="100" name="name2" placeholder="Введите название проекта">
+                <label class="modal__label" for="cost2">Стоимость</label>
+                <input class="modal__input" id="cost2" min="0.00" max="100000000000000" name="cost2" type="number" step="0.01" placeholder="Введите стоимость"><br>
+                <label class="modal__label" for="startDate2">Дата начала</label>
+                <input class="modal__input" id="startDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="startDate2" type="date"/>
+                <label class="modal__label" for="endDate2">Дата окончания</label>
+                <input class="modal__input" id="endDate2" max="2038-01-19T22:23:59" min="1900-01-01T00:00:00" name="endDate2" type="date"/>
+                <label class="modal__label" for="leader2">Руководитель проекта</label>
+                <select class="modal__input" id="leader2" name="leader2">
+                    {% for leader in leaders %}
+                        <option class="leadersEdit" value="leader-{{ leader.idWorker }}">{{ leader.forename }} {{ leader.surname }}</option>
+                    {% endfor %}+
+                </select>
+            </div>
+            <div class="modal__footer">
+                <div class="modal__control modal__control_edit">
+                    <input class="modal__btn modalBtnAdd" type="submit" name="action" value="Изменить">
+                    <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/project_add.js') }}"></script>
-
-<form method="post" >
-    <table class="table">
-        <thead class="table__head">
-            <tr>
-                <th class="table__column" scope="col">id</th>
-                <th class="table__column" scope="col">Название</th>
-                <th class="table__column" scope="col">Руководитель</th>
-                <th class="table__column" scope="col">Оборудование</th>
-                <th class="table__column" scope="col">Дата начала</th>
-                <th class="table__column" scope="col">Дата окончания</th>
-                <th class="table__column" scope="col">Стоимость</th>
-                <th class="table__column" colspan="2">Действия</th>
-            </tr>
-        </thead>
-        <tbody class="table__body">
-            <tr>
-            {% for row in results %}
-                <td class="table__column" scope="col">{{ row.idProject }}</td>
-                <td class="table__column" scope="col">{{ row.Name }}</td>
-                <td class="table__column" scope="col">{{ row.Surname }} {{ row.Forename }}</td>
-                <td class="table__column" scope="col">{{ row.StartDate }}</td>
-                <td class="table__column" scope="col">{{ row.EndDate }}</td>
-                <td class="table__column" scope="col">{{ row.Cost }}</td>
-                <td class="table__column">
-                    <a class="table__btn" href="#"
-                        onclick="modal_data({{ row.idProject }}, '{{ row.Name }}', '{{ row.Forename }} {{ row.Surname }}',
-                         '{{ row.Equipment }}', '{{ row.StartDate }}', '{{ row.EndDate }}', '{{ row.Cost }}')">Редактировать</a>
-                </td>
-                <td class="table__column">
-                    <a class="table__btn" href="/Project/delete/{{ row.idProject }}">Удалить</a>
-                </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        <th class="table__footer" colspan="9">{{ length }} проекта стоимостью {{ project_sum }} </th>
-    </table>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts/project_edit.js') }}"></script>
-</form>
-
+<table class="table">
+    <thead class="table__head">
+        <tr>
+            <th class="table__column" scope="col">id</th>
+            <th class="table__column" scope="col">Название</th>
+            <th class="table__column" scope="col">Руководитель</th>
+            <th class="table__column" scope="col">Оборудование</th>
+            <th class="table__column" scope="col">Дата начала</th>
+            <th class="table__column" scope="col">Дата окончания</th>
+            <th class="table__column" scope="col">Стоимость</th>
+            <th class="table__column" colspan="2">Действия</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td class="table__footer" colspan="9">{{ length }} проекта стоимостью {{ project_sum }}</td>
+        </tr>
+    </tfoot>
+    <tbody class="table__body">
+        {% for row in results %}
+        <tr>
+            <td class="table__column" scope="col">{{ row.idProject }}</td>
+            <td class="table__column" scope="col">{{ row.Name }}</td>
+            <td class="table__column" scope="col">{{ row.Surname }} {{ row.Forename }}</td>
+            <td class="table__column" scope="col">{{ row.StartDate }}</td>
+            <td class="table__column" scope="col">{{ row.EndDate }}</td>
+            <td class="table__column" scope="col">{{ row.Cost }}</td>
+            <td class="table__column">
+                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idProject }}, {{ row.Name }}, {{ row.Cost }}, {{ row.StartDate }}, {{ row.EndDate }}, {{ row.Leader }}">Редактировать</a>
+            </td>
+            <td class="table__column">
+                <a class="table__btn" href="/Project/delete/{{ row.idProject }}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/project.js') }}"></script>
 {% endblock %}

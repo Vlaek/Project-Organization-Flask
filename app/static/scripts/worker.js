@@ -64,7 +64,6 @@ Array.from(openBtn, openButton => {
             }
 
             for (let project of projects) {
-                console.log(project.id)
                 for (let option of projectsArray) {
                     if (project.id === option.value) {
                         document.getElementById(project.id).checked = true;

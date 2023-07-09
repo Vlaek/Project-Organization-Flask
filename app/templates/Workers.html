@@ -48,12 +48,10 @@
                 </select>
                 <div class="modal__checkbox">
                     {% for project in projects_check %}
-                        <input type="checkbox"
-                        name="projects" value="{{ project.idProject }}" onchange="OnChange()" > {{ project.name }}<br>
+                        <input type="checkbox" name="projects" value="{{ project.idProject }}"> {{ project.name }}<br>
                     {% endfor %}
                 </div>
             </div>
-
             <div class="modal__footer">
                 <button class="modal__btn" type="button" id="random">Зарандомить</button>
                 <div class="modal__control">
@@ -95,66 +93,64 @@
                 </select>
                 <div class="modal__checkbox">
                     {% for project in projects_check %}
-                        <input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects2" value="{{ project.name }}"> {{ project.name }}<br>
+                    <label for="project-{{ project.idProject }}"><input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects2" value="{{ project.idProject }}"> {{ project.name }}</label>
                     {% endfor %}
                 </div>
             </div>
-            <div class="modal-footer">
-                <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Изменить">
-                <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
+            <div class="modal__footer">
+                <div class="modal__control modal__control_edit">
+                    <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Изменить">
+                    <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
+                 </div>
             </div>
         </div>
     </div>
-
-    <table class="table">
-        <thead class="table__head">
-            <tr>
-                <th class="table__column" scope="col">id</th>
-                <th class="table__column" scope="col">Имя сотрудника</th>
-                <th class="table__column" scope="col">Дата рождения</th>
-                <th class="table__column" scope="col">Возраст</th>
-                <th class="table__column" scope="col">Проекты</th>
-                <th class="table__column" scope="col">Специальность</th>
-                <th class="table__column" scope="col">Должность</th>
-                <th class="table__column" colspan="2">Действия</th>
-            </tr>
-        </thead>
-        <tbody class="table__body">
-            <tr>
-            {% for row in results %}
-                <td class="table__column" scope="col">{{ row.idWorker }}</td>
-                <td class="table__column" scope="col">{{ row.surname }} {{ row.forename }}</td>
-                <td class="table__column" scope="col">{{ row.DOB }}</td>
-                <td class="table__column" scope="col">{{ row.Age }}</td>
-                <td class="table__column" scope="col">
-                    <select class="table__select" id="worker-{{ row.idWorker }}" name="{{ row.idWorker }}">
-                        {% for executor in executors_check %}
-                            {% if row.idWorker == executor.idWorker %}
-                                <option value="project-{{ executor.idProject }}">{{ executor.Name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </td>
-                <td class="table__column" scope="col">{{ row.speciality }}</td>
-                <td class="table__column" scope="col">{{ row.position }}</td>
-                <td class="table__column">
-                    <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idWorker }}, {{ row.surname }}, {{ row.forename }}, {{ row.DOB }}, {{ row.speciality }}, {{ row.position }}" >Редактировать</a>
-                </td>
-                <td class="table__column">
-                    <a class="table__btn" href="/Worker/delete/{{ row.idWorker }}">Удалить</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <th class="table__footer" colspan="9">Количество сотрудников {{ length }}, инженеров {{ count_engineers[0]['ENGINEERS'] }},
-        техников {{ count_technicians[0]['TECHNICIAN'] }}, конструкторов {{ count_constructors[0]['CONSTRUCTOR'] }},
-        лаборантов {{ count_assistants[0]['ASSISTANT'] }},
-        обслуживающего персонала {{ count_staffs[0]['STAFF'] }},
-        рабочих {{ count_workers[0]['WORKER'] }},
-        начальников {{ count_leaders[0]['LEADER'] }}.</th>
-    </table>
 </form>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts/worker_add.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts/worker_edit.js') }}"></script>
+<table class="table">
+    <thead class="table__head">
+        <tr>
+            <th class="table__column" scope="col">id</th>
+            <th class="table__column" scope="col">Имя сотрудника</th>
+            <th class="table__column" scope="col">Дата рождения</th>
+            <th class="table__column" scope="col">Возраст</th>
+            <th class="table__column" scope="col">Проекты</th>
+            <th class="table__column" scope="col">Специальность</th>
+            <th class="table__column" scope="col">Должность</th>
+            <th class="table__column" colspan="2">Действия</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td class="table__footer" colspan="9">Количество сотрудников {{ length }}, инженеров {{ count_engineers[0]['ENGINEERS'] }}, техников {{ count_technicians[0]['TECHNICIAN'] }}, конструкторов {{ count_constructors[0]['CONSTRUCTOR'] }}, лаборантов {{ count_assistants[0]['ASSISTANT'] }}, обслуживающего персонала {{ count_staffs[0]['STAFF'] }}, рабочих {{ count_workers[0]['WORKER'] }}, начальников {{ count_leaders[0]['LEADER'] }}.</td>
+        </tr>
+    </tfoot>
+    <tbody class="table__body">
+        {% for row in results %}
+        <tr>
+            <td class="table__column" scope="col">{{ row.idWorker }}</td>
+            <td class="table__column" scope="col">{{ row.surname }} {{ row.forename }}</td>
+            <td class="table__column" scope="col">{{ row.DOB }}</td>
+            <td class="table__column" scope="col">{{ row.Age }}</td>
+            <td class="table__column" scope="col">
+                <select class="table__select" id="worker-{{ row.idWorker }}" name="{{ row.idWorker }}">
+                    {% for executor in executors_check %}
+                        {% if row.idWorker == executor.idWorker %}
+                            <option value="project-{{ executor.idProject }}">{{ executor.Name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td class="table__column" scope="col">{{ row.speciality }}</td>
+            <td class="table__column" scope="col">{{ row.position }}</td>
+            <td class="table__column">
+                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idWorker }}, {{ row.surname }}, {{ row.forename }}, {{ row.DOB }}, {{ row.speciality }}, {{ row.position }}" >Редактировать</a>
+            </td>
+            <td class="table__column">
+                <a class="table__btn" href="/Worker/delete/{{ row.idWorker }}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/worker.js') }}"></script>
 {% endblock %}
