@@ -1,135 +1,124 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    Договоры
-{% endblock %}
+{% block title %} Договоры {% endblock %}
 
-{%block header%}
-    <h3  class="my-0 mr-md-auto text-white">Договоры</h3>
-    <form method="GET">
-        <input type="text" placeholder="Поиск" name="q" size="50" value="{{ request.args.get('q', '') }}">
-        <input class="btn2" type="submit" name="action" value="Искать">
-    </form>
-    <div>
-        <button class="btn2" onclick="document.getElementById('id01').style.display='block'">Добавить договор</button>
-        <button class="btn2" onclick="document.location='/'">Назад</button>
-    </div>
+{% block header_title %} Договоры {% endblock %}
+
+{%block header__nav%}
+<form method="GET">
+    <input class="header__input" type="text" placeholder="Поиск..." name="q" size="50" value="{{ request.args.get('q', '') }}">
+    <input class="header__btn" type="submit" name="action" value="Искать">
+</form>
+<nav class="header__nav">
+    <button data-id="modalAdd" class="header__btn btn-open" id="headerBtnAdd">Добавить договор</button>
+    <button class="header__btn" onclick="document.location='/'">Назад</button>
+</nav>
 {% endblock %}
 
 {% block body %}
 <form method="post">
-    <div id="id01" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Добавление договора</h5>
-                    <button type="button" id="kreuz" class="close" data-dismiss="modal" aria-label="Close">
+    <div id="modalAdd" class="modal" tabindex="-1" role="dialog">
+        <div class="modal__content">
+            <div class="modal__header">
+                <p class="modal__title">Добавление проекта</p>
+                <button type="button" class="btn-close close">
                     <span aria-hidden="true">&times;</span>
-                    </button>
+                </button>
+            </div>
+            <div class="modal__body">
+                <input class="modal__input" name="idContract2" hidden>
+                <label class="modal__label" for="name">Название</label>
+                <input class="modal__input" id="name" maxlength="100" name="name" placeholder="Введите название договора">
+                <label class="modal__label" for="client">Клиент</label>
+                <input class="modal__input" id="client" maxlength="100" name="client" placeholder="Введите клиента">
+                <div class="modal__checkbox">
+                    {% for project in projects_check %}
+                        <input type="checkbox" name="projects" value="{{ project.idProject }}"> {{ project.name }}<br>
+                    {% endfor %}
                 </div>
-                    <div class="modal-body">
-                        <input class="form-control" id="Name" maxlength="100" name="Name"
-                       placeholder="Введите название договора" onchange="OnChange()"><br>
-                        <input class="form-control" id="Client" maxlength="100" name="Client"
-                       placeholder="Введите клиента" onchange="OnChange()"><br>
-
-                        <div style="overflow: auto; width: 100%; height: 80px; border: 1px solid #336699; padding-left: 5px">
-                            {% for project in projects_check %}
-                                <input class="require-one" type="checkbox"
-                                name="projects" value="{{ project.idProject }}" onchange="OnChange()" > {{ project.Name }}<br>
-                            {% endfor %}
-                        </div>
-
-                        <div class="modal-footer">
-                            <input id="btn1" type="submit" name="action" value="Добавить">
-                            <button type="button" id="cancel" data-dismiss="modal">Отмена</button>
-                        </div>
-                    </div>
+            </div>
+            <div class="modal__footer">
+                <div class="modal__control modal__control_edit">
+                    <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Добавить">
+                    <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
                 </div>
             </div>
         </div>
+    </div>
 
-     <div id="id02" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Редактирование договора</h5>
-                    <input class="form-control" id="idContract2" name="idContract2" hidden>
-                    <button type="button" id="kreuz2" class="close" data-dismiss="modal" aria-label="Close">
+    <div id="modalEdit" class="modal" tabindex="-1" role="dialog">
+        <div class="modal__content">
+            <div class="modal__header">
+                <p class="modal__title">Редактирование договора</p>
+                <button type="button" class="btn-close close">
                     <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                    <div class="modal-body">
-                        <input class="form-control" id="Name2" maxlength="100" name="Name2"
-                       placeholder="Введите название договора" onchange="OnChange2()"><br>
-                        <input class="form-control" id="Client2" maxlength="100" name="Client2"
-                       placeholder="Введите клиента" onchange="OnChange2()"><br>
-
-                        <div style="overflow: auto; width: 100%; height: 80px; border: 1px solid #336699; padding-left: 5px">
-                            {% for project in projects_check %}
-                                <input class="require-one" type="checkbox" id="{{ project.Name }}"
-                                name="projects2" value="{{ project.idProject }}" onchange="OnChange2()" > {{ project.Name }}<br>
-                            {% endfor %}
-                        </div>
-
-                        <div class="modal-footer">
-                            <input id="btn2" type="submit" name="action" value="Изменить">
-                            <button type="button" id="cancel2" data-dismiss="modal">Отмена</button>
-                        </div>
-                    </div>
+                </button>
+            </div>
+            <div class="modal__body">
+                <input class="modal__input" name="idContract2" hidden>
+                <label class="modal__label" for="name">Название</label>
+                <input class="modal__input" id="name2" maxlength="100" name="name2" placeholder="Введите название договора" onchange="OnChange2()"><br>
+                <label class="modal__label" for="client2">Клиент</label>
+                <input class="modal__input" id="client2" maxlength="100" name="client2" placeholder="Введите клиента" onchange="OnChange2()"><br>
+                <div class="modal__checkbox">
+                    {% for project in projects_check %}
+                    <label for="project-{{ project.idProject }}"><input id="project-{{ project.idProject }}" type="checkbox" name="projects" value="{{ project.idProject }}"> {{ project.name }}</label>
+                    {% endfor %}
                 </div>
             </div>
+            <div class="modal__footer">
+                <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Изменить">
+                <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
+            </div>
         </div>
+    </div>
 </form>
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/contract_add.js') }}"></script>
-
-<form method="post" >
-    <table class="table table-bordered table-dark">
-        <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">Название</th>
-                <th scope="col">Заказчик</th>
-                <th scope="col">Проекты</th>
-                <th scope="col">Дата начала</th>
-                <th scope="col">Дата окончания</th>
-                <th scope="col">Стоимость</th>
-                <th colspan="2">Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            {% for row in results %}
-                <td scope="col">{{ row.idContract }}</td>
-                <td scope="col">{{ row.Name }}</td>
-                <td scope="col">{{ row.Client }}</td>
-                <td scope="col">
-                    <select style="overflow: auto; width: 100%; height: 100%" id="ProjectsSelect" name="{{ row.idContract }}">
-                        {% for project in contract_project_check %}
-                            {% if row.idContract == project.idContract %}
-                                <option>{{ project.Name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </td>
-                <td scope="col">{{ row.MinStartDate }}</td>
-                <td scope="col">{{ row.MaxEndDate }}</td>
-                <td scope="col">{{ row.FullCost }}</td>
-                <td>
-                    <a href="#"
-                    onclick="modal_data({{ row.idContract }}, '{{ row.Name }}', '{{ row.Client }}', {{ edit_projects_check }})">Редактировать</a>
-                </td>
-                <td>
-                    <a href="/Contract/delete/{{ row.idContract }}">Удалить</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <th colspan="8">{{ length }} договоров стоимостью {{ total_sum }}</th>
-    </table>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts/contract_edit.js') }}"></script>
-</form>
+<table class="table">
+    <thead class="table__head">
+        <tr>
+            <th class="table__column" scope="col">id</th>
+            <th class="table__column" scope="col">Название</th>
+            <th class="table__column" scope="col">Заказчик</th>
+            <th class="table__column" scope="col">Проекты</th>
+            <th class="table__column" scope="col">Дата начала</th>
+            <th class="table__column" scope="col">Дата окончания</th>
+            <th class="table__column" scope="col">Стоимость</th>
+            <th class="table__column" colspan="2">Действия</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td class="table__footer" colspan="8">{{ length }} договоров стоимостью {{ total_sum }}</td>
+        </tr>
+    </tfoot>
+    <tbody class="table__body">
+        {% for row in results %}
+        <tr>
+            <td class="table__column" scope="col">{{ row.idContract }}</td>
+            <td class="table__column" scope="col">{{ row.name }}</td>
+            <td class="table__column" scope="col">{{ row.client }}</td>
+            <td class="table__column" scope="col">
+                <select class="table__select" id="contract-{{ row.idContract }}" name="{{ row.idContract }}">
+                    {% for project in contract_project_check %}
+                        {% if row.idContract == project.idContract %}
+                            <option>{{ project.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td class="table__column" scope="col">{{ row.MinStartDate }}</td>
+            <td class="table__column" scope="col">{{ row.MaxEndDate }}</td>
+            <td class="table__column" scope="col">{{ row.FullCost }}</td>
+            <td class="table__column">
+                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idContract }}, {{ row.name }}, {{ row.client }}, {{ edit_projects_check }}">Редактировать</a>
+            </td>
+            <td class="table__column">
+                <a href="/Contract/delete/{{ row.idContract }}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/contract.js') }}"></script>
 
 {% endblock %}
