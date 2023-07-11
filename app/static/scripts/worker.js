@@ -1,6 +1,15 @@
 const close = document.getElementsByClassName('close');
 const openBtn = document.getElementsByClassName('btn-open');
 
+const btnDelete = document.querySelector('.btnDelete');
+const leadersArray = JSON.parse(btnDelete.getAttribute('data-leaders'));
+
+leadersArray.forEach(id => {
+    let btn = document.querySelector('.idBtnDelete-' + id);
+    btn.classList.add('btnDisabled');
+    btn.addEventListener('click', (e) => e.preventDefault())
+})
+
 Array.from(close, closeButton => {
     closeButton.addEventListener('click', e => {
         e.target.closest('.modal').style.display = 'none'
@@ -36,19 +45,16 @@ Array.from(openBtn, openButton => {
             const randomBtn = document.getElementById('random');
             randomBtn.addEventListener('click', () => {
                 const specialities = ['Инженер', 'Техник', 'Конструктор', 'Лаборант', 'Обслуживающий персонал'];
-                $(document).ready(() => {
-                    let url = 'https://api.randomdatatools.ru/?count=10&params=LastName,FirstName';
-                    $.getJSON(url, {
-                        format: 'json'
-                    })
-                    .done((data) => {
-                        forenameInput.value = data[1]['FirstName'];
-                        surnameInput.value = data[1]["LastName"];
-                        dobInput.value = formatDate(getRandomInRange(1950, 2002), getRandomInRange(1, 12), getRandomInRange(1, 28));
-                        specialityInput.value = specialities[getRandomInRange(0, 4)];
-                        formValidation(forenameInput, surnameInput, dobInput, modal);
-                    });
-                });
+                let url = 'https://api.randomdatatools.ru/?count=10&params=LastName,FirstName';
+                fetch(url)
+                .then(resp => resp.json())
+                .then(data => {
+                    forenameInput.value = data[1]["LastName"];
+                    surnameInput.value = data[1]['FirstName'];
+                    dobInput.value = formatDate(getRandomInRange(1950, 2002), getRandomInRange(1, 12), getRandomInRange(1, 28));
+                    specialityInput.value = specialities[getRandomInRange(0, 4)];
+                    formValidation(forenameInput, surnameInput, dobInput, modal);
+                })
             });
 
         } else if (modalId === 'modalEdit') {

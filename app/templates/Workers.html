@@ -145,8 +145,8 @@
             <td class="table__column">
                 <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idWorker }}, {{ row.surname }}, {{ row.forename }}, {{ row.DOB }}, {{ row.speciality }}, {{ row.position }}" >Редактировать</a>
             </td>
-            <td class="table__column">
-                <a class="table__btn" href="/Worker/delete/{{ row.idWorker }}">Удалить</a>
+            <td class="table__column btnDelete" data-leaders="{{ leader_ids }}">
+                <a class="table__btn idBtnDelete-{{ row.idWorker }}" href="/Worker/delete/{{ row.idWorker }}">Удалить</a>
             </td>
         </tr>
         {% endfor %}

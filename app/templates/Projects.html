@@ -107,13 +107,13 @@
         {% for row in results %}
         <tr>
             <td class="table__column" scope="col">{{ row.idProject }}</td>
-            <td class="table__column" scope="col">{{ row.Name }}</td>
-            <td class="table__column" scope="col">{{ row.Surname }} {{ row.Forename }}</td>
-            <td class="table__column" scope="col">{{ row.StartDate }}</td>
-            <td class="table__column" scope="col">{{ row.EndDate }}</td>
-            <td class="table__column" scope="col">{{ row.Cost }}</td>
+            <td class="table__column" scope="col">{{ row.name }}</td>
+            <td class="table__column" scope="col">{{ row.surname }} {{ row.forename }}</td>
+            <td class="table__column" scope="col">{{ row.startDate }}</td>
+            <td class="table__column" scope="col">{{ row.endDate }}</td>
+            <td class="table__column" scope="col">{{ row.cost }}</td>
             <td class="table__column">
-                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idProject }}, {{ row.Name }}, {{ row.Cost }}, {{ row.StartDate }}, {{ row.EndDate }}, {{ row.Leader }}">Редактировать</a>
+                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idProject }}, {{ row.name }}, {{ row.cost }}, {{ row.startDate }}, {{ row.endDate }}, {{ row.leader }}">Редактировать</a>
             </td>
             <td class="table__column">
                 <a class="table__btn" href="/Project/delete/{{ row.idProject }}">Удалить</a>

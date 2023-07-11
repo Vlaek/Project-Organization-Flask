@@ -62,7 +62,7 @@
                 <input class="modal__input" id="client2" maxlength="100" name="client2" placeholder="Введите клиента" onchange="OnChange2()"><br>
                 <div class="modal__checkbox">
                     {% for project in projects_check %}
-                    <label for="project-{{ project.idProject }}"><input id="project-{{ project.idProject }}" type="checkbox" name="projects" value="{{ project.idProject }}"> {{ project.name }}</label>
+                    <label for="project-{{ project.idProject }}"><input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects" value="{{ project.idProject }}"> {{ project.name }}</label>
                     {% endfor %}
                 </div>
             </div>
@@ -88,7 +88,7 @@
     </thead>
     <tfoot>
         <tr>
-            <td class="table__footer" colspan="8">{{ length }} договоров стоимостью {{ total_sum }}</td>
+            <td class="table__footer" colspan="9">{{ length }} договоров стоимостью {{ total_sum }}</td>
         </tr>
     </tfoot>
     <tbody class="table__body">
@@ -101,7 +101,7 @@
                 <select class="table__select" id="contract-{{ row.idContract }}" name="{{ row.idContract }}">
                     {% for project in contract_project_check %}
                         {% if row.idContract == project.idContract %}
-                            <option>{{ project.name }}</option>
+                            <option value="project-{{ project.idProject }}">{{ project.name }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
@@ -110,10 +110,10 @@
             <td class="table__column" scope="col">{{ row.MaxEndDate }}</td>
             <td class="table__column" scope="col">{{ row.FullCost }}</td>
             <td class="table__column">
-                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idContract }}, {{ row.name }}, {{ row.client }}, {{ edit_projects_check }}">Редактировать</a>
+                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idContract }}, {{ row.name }}, {{ row.client }}">Редактировать</a>
             </td>
             <td class="table__column">
-                <a href="/Contract/delete/{{ row.idContract }}">Удалить</a>
+                <a class="table__btn" href="/Contract/delete/{{ row.idContract }}">Удалить</a>
             </td>
         </tr>
         {% endfor %}
