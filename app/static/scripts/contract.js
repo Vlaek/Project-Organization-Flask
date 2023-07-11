@@ -14,7 +14,6 @@ Array.from(openBtn, openButton => {
         modal.style.display = 'flex';
 
         const dataArray = modal.querySelectorAll('.modal__input');
-        console.log(dataArray);
         const idInput = dataArray[0];
         const nameInput = dataArray[1];
         const clientInput = dataArray[2];
@@ -31,21 +30,28 @@ Array.from(openBtn, openButton => {
         });
 
         if (modalId === 'modalEdit') {
-//            const dataArray = e.target.getAttribute('data-info').split(', ');
-//            const [id, name, client, other] = dataArray;
-//            console.log(other);
-//            const options = document.querySelectorAll('.leadersEdit');
+            const dataArray = e.target.getAttribute('data-info').split(', ');
+            const [id, name, client] = dataArray;
 
-//            for (let option of options) {
-//                option.selected = false;
-//                if (option.value === ('leader-' + leader)) {
-//                    option.selected = true;
-//                }
-//            }
+            const projects = document.querySelectorAll('.projectsEdit');
+            const select = document.getElementById('contract-' + id);
+            const projectsArray = select.querySelectorAll('option');
+
+            for (let project of projects) {
+                document.getElementById(project.id).checked = false;
+            }
+
+            for (let project of projects) {
+                for (let option of projectsArray) {
+                    if (project.id === option.value) {
+                        document.getElementById(project.id).checked = true;
+                    }
+                }
+            }
 
             idInput.value = id;
             nameInput.value = name;
-            clientInput.value = cost;
+            clientInput.value = client;
         }
 
         formValidation(nameInput, clientInput, modal);

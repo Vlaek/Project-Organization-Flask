@@ -170,24 +170,29 @@ def workers():
         for i in range(len(projects_check)):
             edit_executors_check.append(projects_check[i]['name'])
 
+        cursor.execute("SELECT Projects.leader FROM Projects")
+        leader_ids = []
+
+        for i in cursor.fetchall():
+            leader_ids.append(i['leader'])
+
         return render_template('Workers.html', results=results, length=len(results),
                                count_engineers=count_engineers,
                                count_technicians=count_technicians, count_assistants=count_assistants,
                                count_constructors=count_constructors, count_staffs=count_staffs,
                                count_workers=count_workers, count_leaders=count_leaders,
                                executors_check=executors_check,
-                               projects_check=projects_check)
+                               projects_check=projects_check, leader_ids=leader_ids)
 
 
 @app.route('/Worker/delete/<int:worker_id>')
 def worker_delete(worker_id):
     cursor = db.cursor()
-
-    cursor.execute('DELETE FROM Workers WHERE ((Workers.idWorker=' + str(worker_id) + '))')
-
+    cursor.execute('DELETE FROM Executors WHERE (Executors.idWorker=' + str(worker_id) + ')')
+    cursor.execute('DELETE FROM Workers WHERE (Workers.idWorker=' + str(worker_id) + ')')
     db.commit()
-
     return redirect('/Workers')
+
 
 @app.route('/Projects', methods=['POST', 'GET'])
 def projects():
@@ -277,7 +282,7 @@ def projects():
         project_sum = 0
 
         for i in range(len(results)):
-            project_sum += results[i]['Cost']
+            project_sum += results[i]['cost']
 
         cursor.execute("SELECT Workers.surname, Workers.forename, Workers.idWorker FROM Workers WHERE Workers.position = 'Начальник'")
 
@@ -302,11 +307,9 @@ def projects():
 @app.route('/Project/delete/<int:project_id>')
 def project_delete(project_id):
     cursor = db.cursor()
-
-    cursor.execute('DELETE FROM Projects WHERE ((Projects.idProject=' + str(project_id) + '))')
-
+    cursor.execute('DELETE FROM Executors WHERE (Executors.idProject=' + str(project_id) + ')')
+    cursor.execute('DELETE FROM Projects WHERE (Projects.idProject=' + str(project_id) + ')')
     db.commit()
-
     return redirect('/Projects')
 
 
@@ -337,9 +340,9 @@ def contracts():
             for i in range(len(results)):
                 ids_contracts.append(results[i]['idContract'])
 
-            for row in range(len(contract_project)):
+            for project in contract_project:
                 insert_query = "INSERT INTO `ContractProject` (idContract, idProject) " \
-                               "VALUES ('" + str(max(ids_contracts)) + "', '" + str(contract_project[row]) + "');"
+                               "VALUES ('" + str(max(ids_contracts)) + "', '" + project + "');"
                 cursor.execute(insert_query)
                 db.commit()
 
@@ -432,27 +435,16 @@ def contracts():
 
         contract_project_check = cursor.fetchall()
 
-        edit_projects_check = []
-
-        for i in range(len(projects_check)):
-            edit_projects_check.append(projects_check[i]['name'])
-
         return render_template('Contracts.html', results=results, length=len(results), total_sum=total_sum,
-                               projects_check=projects_check, contract_project_check=contract_project_check,
-                               edit_projects_check=edit_projects_check)
+                               projects_check=projects_check, contract_project_check=contract_project_check)
 
 
 @app.route('/Contract/delete/<int:contract_id>')
 def contract_delete(contract_id):
-
     cursor = db.cursor()
-
-    cursor.execute('DELETE FROM Contracts WHERE ((Contracts.idContract=' + str(contract_id) + '))')
-
-    cursor.execute('DELETE FROM ContractProject WHERE ((ContractProject.idContract=' + str(contract_id) + '))')
-
+    cursor.execute('DELETE FROM ContractProject WHERE (ContractProject.idContract=' + str(contract_id) + ')')
+    cursor.execute('DELETE FROM Contracts WHERE (Contracts.idContract=' + str(contract_id) + ')')
     db.commit()
-
     return redirect('/Contracts')
 
 

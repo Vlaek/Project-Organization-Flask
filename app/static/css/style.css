@@ -255,3 +255,10 @@ header {
 .modal__btn:last-child {
     margin-left: 15px;
 }
+
+.btnDisabled {
+    background: #dedede;
+}
+.btnDisabled:hover {
+    background: #dedede;
+}
