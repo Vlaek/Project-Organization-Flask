@@ -49,8 +49,8 @@ Array.from(openBtn, openButton => {
                 fetch(url)
                 .then(resp => resp.json())
                 .then(data => {
-                    forenameInput.value = data[1]["LastName"];
-                    surnameInput.value = data[1]['FirstName'];
+                    forenameInput.value = data[1]['FirstName'];
+                    surnameInput.value = data[1]["LastName"];
                     dobInput.value = formatDate(getRandomInRange(1950, 2002), getRandomInRange(1, 12), getRandomInRange(1, 28));
                     specialityInput.value = specialities[getRandomInRange(0, 4)];
                     formValidation(forenameInput, surnameInput, dobInput, modal);
@@ -114,3 +114,11 @@ function formValidation(forenameInput, surnameInput, dobInput, modal) {
         modal.querySelector(".modalBtnAdd").removeAttribute("disabled");
     }
 }
+
+const selectArray = document.querySelectorAll('select');
+selectArray.forEach(select => {
+    if (select.options.length === 0) {
+        console.log(select.disabled)
+        select.setAttribute('disabled', 'disabled')
+    }
+})

@@ -17,6 +17,7 @@ Array.from(openBtn, openButton => {
         const idInput = dataArray[0];
         const nameInput = dataArray[1];
         const clientInput = dataArray[2];
+        const projects = modal.querySelectorAll('.projectsEdit');
 
         window.addEventListener('click', (e) => {
             const target = e.target;
@@ -26,14 +27,13 @@ Array.from(openBtn, openButton => {
         });
 
         modal.addEventListener('change', () => {
-            formValidation(nameInput, clientInput, modal);
+            formValidation(nameInput, clientInput, projects, modal);
         });
 
         if (modalId === 'modalEdit') {
             const dataArray = e.target.getAttribute('data-info').split(', ');
             const [id, name, client] = dataArray;
-
-            const projects = document.querySelectorAll('.projectsEdit');
+            console.log(projects)
             const select = document.getElementById('contract-' + id);
             const projectsArray = select.querySelectorAll('option');
 
@@ -54,7 +54,7 @@ Array.from(openBtn, openButton => {
             clientInput.value = client;
         }
 
-        formValidation(nameInput, clientInput, modal);
+        formValidation(nameInput, clientInput, projects, modal);
     });
 });
 
@@ -63,8 +63,9 @@ function dateFormat(old_date, old_separator, new_separator) {
     return year + new_separator + month + new_separator + day;
 };
 
-function formValidation(nameInput, clientInput, modal) {
-    if (nameInput.value == '' || clientInput.value == '') {
+function formValidation(nameInput, clientInput, projects, modal) {
+    let checked = modal.querySelector('.projectsEdit:checked') || 0;
+    if (nameInput.value == '' || clientInput.value == '' || checked === 0) {
         modal.querySelector(".modalBtnAdd").setAttribute("disabled", "disabled");
     } else {
         modal.querySelector(".modalBtnAdd").removeAttribute("disabled");
