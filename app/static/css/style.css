@@ -39,6 +39,7 @@ header {
 	background: #161B22;
 	padding: 0 15px;
 	margin: 0 auto;
+	z-index: 100;
 }
 
 .header__title {
@@ -257,8 +258,13 @@ header {
 }
 
 .btnDisabled {
-    background: #dedede;
+    background: #959595;
+    color: #5f5f5f;
 }
 .btnDisabled:hover {
-    background: #dedede;
+    background: #959595;
+}
+
+select[disabled] {
+  background: #959595;
 }

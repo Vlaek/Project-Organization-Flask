@@ -26,14 +26,14 @@
                 </button>
             </div>
             <div class="modal__body">
-                <input class="modal__input" name="idContract2" hidden>
+                <input class="modal__input" name="idContract" hidden>
                 <label class="modal__label" for="name">Название</label>
                 <input class="modal__input" id="name" maxlength="100" name="name" placeholder="Введите название договора">
                 <label class="modal__label" for="client">Клиент</label>
                 <input class="modal__input" id="client" maxlength="100" name="client" placeholder="Введите клиента">
                 <div class="modal__checkbox">
-                    {% for project in projects_check %}
-                        <input type="checkbox" name="projects" value="{{ project.idProject }}"> {{ project.name }}<br>
+                    {% for project in projects_list %}
+                        <input type="checkbox" name="projects" class="projectsEdit" value="{{ project.idProject }}"> {{ project.name }}<br>
                     {% endfor %}
                 </div>
             </div>
@@ -57,18 +57,20 @@
             <div class="modal__body">
                 <input class="modal__input" name="idContract2" hidden>
                 <label class="modal__label" for="name">Название</label>
-                <input class="modal__input" id="name2" maxlength="100" name="name2" placeholder="Введите название договора" onchange="OnChange2()"><br>
+                <input class="modal__input" id="name2" maxlength="100" name="name2" placeholder="Введите название договора"><br>
                 <label class="modal__label" for="client2">Клиент</label>
-                <input class="modal__input" id="client2" maxlength="100" name="client2" placeholder="Введите клиента" onchange="OnChange2()"><br>
+                <input class="modal__input" id="client2" maxlength="100" name="client2" placeholder="Введите клиента"><br>
                 <div class="modal__checkbox">
-                    {% for project in projects_check %}
-                    <label for="project-{{ project.idProject }}"><input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects" value="{{ project.idProject }}"> {{ project.name }}</label>
+                    {% for project in projects_list %}
+                    <label for="project-{{ project.idProject }}"><input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects2" value="{{ project.idProject }}"> {{ project.name }}</label>
                     {% endfor %}
                 </div>
             </div>
             <div class="modal__footer">
-                <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Изменить">
-                <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
+                <div class="modal__control modal__control_edit">
+                    <input class="modal__btn modalBtnAdd" type="submit" name="action" disabled value="Изменить">
+                    <button class="modal__btn close" type="button" data-dismiss="modal">Отмена</button>
+                </div>
             </div>
         </div>
     </div>
@@ -92,28 +94,28 @@
         </tr>
     </tfoot>
     <tbody class="table__body">
-        {% for row in results %}
+        {% for contract in contracts_list %}
         <tr>
-            <td class="table__column" scope="col">{{ row.idContract }}</td>
-            <td class="table__column" scope="col">{{ row.name }}</td>
-            <td class="table__column" scope="col">{{ row.client }}</td>
+            <td class="table__column" scope="col">{{ contract.idContract }}</td>
+            <td class="table__column" scope="col">{{ contract.name }}</td>
+            <td class="table__column" scope="col">{{ contract.client }}</td>
             <td class="table__column" scope="col">
-                <select class="table__select" id="contract-{{ row.idContract }}" name="{{ row.idContract }}">
-                    {% for project in contract_project_check %}
-                        {% if row.idContract == project.idContract %}
+                <select class="table__select" id="contract-{{ contract.idContract }}" name="{{ contract.idContract }}">
+                    {% for project in contract_project_list %}
+                        {% if contract.idContract == project.idContract %}
                             <option value="project-{{ project.idProject }}">{{ project.name }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
             </td>
-            <td class="table__column" scope="col">{{ row.MinStartDate }}</td>
-            <td class="table__column" scope="col">{{ row.MaxEndDate }}</td>
-            <td class="table__column" scope="col">{{ row.FullCost }}</td>
+            <td class="table__column" scope="col">{{ contract.MinStartDate }}</td>
+            <td class="table__column" scope="col">{{ contract.MaxEndDate }}</td>
+            <td class="table__column" scope="col">{{ contract.FullCost }}</td>
             <td class="table__column">
-                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idContract }}, {{ row.name }}, {{ row.client }}">Редактировать</a>
+                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ contract.idContract }}, {{ contract.name }}, {{ contract.client }}">Редактировать</a>
             </td>
             <td class="table__column">
-                <a class="table__btn" href="/Contract/delete/{{ row.idContract }}">Удалить</a>
+                <a class="table__btn" href="/Contract/delete/{{ contract.idContract }}">Удалить</a>
             </td>
         </tr>
         {% endfor %}

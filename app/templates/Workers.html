@@ -47,7 +47,7 @@
                     <option>Начальник</option>
                 </select>
                 <div class="modal__checkbox">
-                    {% for project in projects_check %}
+                    {% for project in projects_list %}
                         <input type="checkbox" name="projects" value="{{ project.idProject }}"> {{ project.name }}<br>
                     {% endfor %}
                 </div>
@@ -92,7 +92,7 @@
                     <option>Начальник</option>
                 </select>
                 <div class="modal__checkbox">
-                    {% for project in projects_check %}
+                    {% for project in projects_list %}
                     <label for="project-{{ project.idProject }}"><input id="project-{{ project.idProject }}" class="projectsEdit" type="checkbox" name="projects2" value="{{ project.idProject }}"> {{ project.name }}</label>
                     {% endfor %}
                 </div>
@@ -125,28 +125,28 @@
         </tr>
     </tfoot>
     <tbody class="table__body">
-        {% for row in results %}
+        {% for worker in workers_list %}
         <tr>
-            <td class="table__column" scope="col">{{ row.idWorker }}</td>
-            <td class="table__column" scope="col">{{ row.surname }} {{ row.forename }}</td>
-            <td class="table__column" scope="col">{{ row.DOB }}</td>
-            <td class="table__column" scope="col">{{ row.Age }}</td>
+            <td class="table__column" scope="col">{{ worker.idWorker }}</td>
+            <td class="table__column" scope="col">{{ worker.surname }} {{ worker.forename }}</td>
+            <td class="table__column" scope="col">{{ worker.DOB }}</td>
+            <td class="table__column" scope="col">{{ worker.Age }}</td>
             <td class="table__column" scope="col">
-                <select class="table__select" id="worker-{{ row.idWorker }}" name="{{ row.idWorker }}">
-                    {% for executor in executors_check %}
-                        {% if row.idWorker == executor.idWorker %}
+                <select class="table__select" id="worker-{{ worker.idWorker }}" name="{{ worker.idWorker }}">
+                    {% for executor in executors_list %}
+                        {% if worker.idWorker == executor.idWorker %}
                             <option value="project-{{ executor.idProject }}">{{ executor.Name }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
             </td>
-            <td class="table__column" scope="col">{{ row.speciality }}</td>
-            <td class="table__column" scope="col">{{ row.position }}</td>
+            <td class="table__column" scope="col">{{ worker.speciality }}</td>
+            <td class="table__column" scope="col">{{ worker.position }}</td>
             <td class="table__column">
-                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ row.idWorker }}, {{ row.surname }}, {{ row.forename }}, {{ row.DOB }}, {{ row.speciality }}, {{ row.position }}" >Редактировать</a>
+                <a class="table__btn btn-open" href="#" id="editBtn" data-id="modalEdit" data-info="{{ worker.idWorker }}, {{ worker.surname }}, {{ worker.forename }}, {{ worker.DOB }}, {{ worker.speciality }}, {{ worker.position }}" >Редактировать</a>
             </td>
-            <td class="table__column btnDelete" data-leaders="{{ leader_ids }}">
-                <a class="table__btn idBtnDelete-{{ row.idWorker }}" href="/Worker/delete/{{ row.idWorker }}">Удалить</a>
+            <td class="table__column btnDelete" data-leaders="{{ leader_list }}">
+                <a class="table__btn idBtnDelete-{{ worker.idWorker }}" href="/Worker/delete/{{ worker.idWorker }}">Удалить</a>
             </td>
         </tr>
         {% endfor %}
